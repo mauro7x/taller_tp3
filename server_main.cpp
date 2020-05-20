@@ -17,9 +17,8 @@
 
 int main(int argc, char* argv[]) {
 
-    // Chequeamos argumentos recibidos
     if (argc != 3) {
-        fprintf(stdout, "%s\n", USAGE_ERROR_MSG);
+        std::cerr << USAGE_ERROR_MSG << std::endl;
         return USAGE_ERROR;
     }
 
