@@ -1,0 +1,53 @@
+#include "GameProxy.h"
+
+// ----------------------------------------------------------------------------
+// Métodos privados
+
+void GameProxy::_checkIfFinished() {
+    if (last_answer == WIN_MSG || last_answer == LOSS_MSG) {
+        is_active = false;
+    }
+}
+
+
+// ----------------------------------------------------------------------------
+// API pública
+
+GameProxy::GameProxy() : is_active(true) {}
+
+
+bool GameProxy::isActive() const {
+    return is_active;
+}
+
+
+void GameProxy::send(const Command& cmd) const {
+    try {
+        protocol << cmd;
+    } catch (const Exception& e) {
+        throw e;
+    }
+}
+
+
+void GameProxy::recv() {
+    try {
+        protocol >> last_answer;
+    } catch (const Exception& e) {
+        throw e;
+    }
+
+    // actualizar is_active
+    _checkIfFinished();
+}
+
+
+void GameProxy::info() const {
+    std::cout << last_answer << std::endl;
+}
+
+
+GameProxy::~GameProxy() {}
+
+
+// ----------------------------------------------------------------------------
