@@ -18,3 +18,7 @@
 cpplint.py
 execute.sh
 filter_options
+
+# template
+template.cpp
+template.h
