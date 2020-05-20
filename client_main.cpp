@@ -11,21 +11,37 @@
 
 #include "defs.h"
 #include "Exception.h"
+
+#include "CommandStreamer.h"
+#include "GameProxy.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
 
 int main(int argc, char* argv[]) {
 
-    // Chequeamos argumentos recibidos
     if (argc != 3) {
-        fprintf(stdout, "%s\n", USAGE_ERROR_MSG);
+        std::cerr << USAGE_ERROR_MSG << std::endl;
         return USAGE_ERROR;
     }
 
-    
+    std::string hostname = argv[1];
+    std::string port = argv[2];
 
+    try {
+        CommandStreamer command_streamer(stdin);
+        GameProxy game;
 
+        while (game.isActive()) {
+            game.send(command_streamer());
+            game.recv();
+            game.info();
+        }
+
+    } catch (const Exception& e) {
+        std::cerr << e.what() << "\n";
+        return ERROR;
+    }
 
     return 0;
 }
