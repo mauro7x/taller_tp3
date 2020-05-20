@@ -22,7 +22,6 @@ class Exception : public std::exception {
         */
         explicit Exception(const std::string msg_error) noexcept;
 
-
         /** 
          * Descripcion: devuelve el mensaje de error.
          * Parametros: -
@@ -31,7 +30,6 @@ class Exception : public std::exception {
          * No hay que ocuparse del puntero recibido.
         */
         virtual const char* what() const noexcept;
-
 
         /** 
          * Descripcion: destructor.
