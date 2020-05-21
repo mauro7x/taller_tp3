@@ -7,18 +7,11 @@
 // ----------------------------------------------------------------------------
 // API pública
 
-Command::Command() {}
+Command::Command(char id) : id(id) {}
 
 
-Command::Command(Command&& other) {
-    // mover cosas
-}
-
-
-Command& Command::operator=(Command&& other) {
-    // mover cosas
-
-    return *this;
+char Command::type() const {
+    return id;
 }
 
 
