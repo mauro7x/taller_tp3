@@ -57,17 +57,15 @@ size_t Guess::_countRegularDigits(unsigned short int secret_number) const {
 void Guess::_formatReply(std::string& reply, size_t correct_digits,
                           size_t regular_digits) const {
     reply.clear();
-    std::string s_correct = std::to_string(correct_digits);
-    std::string s_regular = std::to_string(regular_digits);
 
     if (correct_digits > 0 && regular_digits > 0) {
-        reply = s_correct + " bien, " + s_regular + " regular";
+        reply = N_CORRECT_N_REGULAR_MSG(correct_digits, regular_digits);
     } else if (correct_digits > 0) {
-        reply = s_correct + " bien";
+        reply = N_CORRECT_MSG(correct_digits);
     } else if (regular_digits > 0) {
-        reply = s_regular + " regular";
+        reply = N_REGULAR_MSG(regular_digits);
     } else {
-        reply = "3 mal";
+        reply = ALL_INCORRECT_MSG;
     }
 }
 
