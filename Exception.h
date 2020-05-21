@@ -18,13 +18,16 @@ class Exception : public std::exception {
     public:
         /** 
          * Descripcion: constructor.
+         * 
          * Parametros: mensaje de error.
         */
         explicit Exception(const std::string msg_error) noexcept;
 
         /** 
          * Descripcion: devuelve el mensaje de error.
+         * 
          * Parametros: -
+         * 
          * Retorno: mensaje de error.
          * 
          * No hay que ocuparse del puntero recibido.
