@@ -59,11 +59,12 @@ class GameProxy {
         bool isActive() const;
 
         /**
-         * Descripcion: envia un comando al servidor.
+         * Descripcion: envia un comando al servidor y libera su memoria.
          * Parametros: comando a enviar.
          * Retorno: -
         */
-        void send(const Command& cmd) const;
+        //void send(Command* cmd) const;
+        void send(Command* cmd);
 
         /**
          * Descripcion: recibe la respuesta del servidor al ultimo

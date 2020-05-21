@@ -21,9 +21,20 @@ bool GameProxy::isActive() const {
 }
 
 
-void GameProxy::send(const Command& cmd) const {
+void GameProxy::send(Command* cmd) { // poner el const
     try {
         protocol << cmd;
+
+        // proxy stuff (aca entra el server)
+        Command* new_cmd = NULL;
+        protocol >> new_cmd;
+        // do stuff de server
+        const Command& r = *new_cmd;
+        protocol << r(200);
+        delete new_cmd;
+        
+
+
     } catch (const Exception& e) {
         throw e;
     }
@@ -33,6 +44,7 @@ void GameProxy::send(const Command& cmd) const {
 void GameProxy::recv() {
     try {
         protocol >> last_answer;
+
     } catch (const Exception& e) {
         throw e;
     }
