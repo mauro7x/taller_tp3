@@ -8,13 +8,13 @@ El plan se basa en el mostrado por Martín en la clase del 19 de mayo.
 
 *A medida que se realicen las etapas, ir tachandolas (utilizando ~~ text ~~)*.
 
-### Etapa 1: diseño completo
+### ~Etapa 1: diseño completo~
 - Observaciones: -.
 
-### Etapa 2: API servidor / API cliente (fakes)
+### Etapa 2: API servidor / API cliente (fakes) [WORKING...]
 - Observaciones: -.
 
-### Etapa 3: resolver la lógica
+### Etapa 3: resolver la lógica [WORKING...]
 - Observaciones: -.
 
 ### Etapa 4: serialización (en el mismo método)
