@@ -20,7 +20,7 @@ unsigned short int Guess::number() const {
 std::string Guess::operator()(unsigned short secret_number) const {
     // GUESS ACTION
     
-    return "Not implemented yet.";
+    return "Value: " + std::to_string(value) + ".";
 }
 
 

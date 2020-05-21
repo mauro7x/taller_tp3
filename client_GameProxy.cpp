@@ -26,14 +26,14 @@ void GameProxy::send(Command* cmd) { // poner el const
         protocol << cmd;
 
         // proxy stuff (aca entra el server)
-        Command* new_cmd = NULL;
-        protocol >> new_cmd;
-        // do stuff de server
-        const Command& r = *new_cmd;
-        protocol << r(200);
-        delete new_cmd;
-        
-
+        {
+            Command* new_cmd = NULL;
+            protocol >> new_cmd;
+            // do stuff de server
+            const Command& r = *new_cmd;
+            protocol << r(200);
+            delete new_cmd;
+        }
 
     } catch (const Exception& e) {
         throw e;

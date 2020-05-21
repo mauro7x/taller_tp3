@@ -14,8 +14,9 @@ std::string Protocol::_serialize(Command* cmd) const {
         unsigned short int number;
         number = ((Guess*) cmd)->number();
         number = htons(number);
-        serialized += ((char*) &number)[0];
-        serialized += ((char*) &number)[1];
+
+        serialized += ((unsigned char*) &number)[0];
+        serialized += ((unsigned char*) &number)[1];
     }
 
     return serialized;
@@ -54,9 +55,10 @@ void Protocol::operator>>(Command* &cmd) const {
         case GUESS: {
             unsigned short int number;
             unsigned short int be_number;
+
             // cambiar por recibir un unsigned short int del socket
-            ((char*) &be_number)[0] = cmd_serialized[1];
-            ((char*) &be_number)[0] = cmd_serialized[2];
+            ((unsigned char*) &be_number)[0] = cmd_serialized[1];
+            ((unsigned char*) &be_number)[1] = cmd_serialized[2];
             number = ntohs(be_number);
 
             cmd = new Guess(number);
@@ -79,13 +81,15 @@ void Protocol::operator>>(Command* &cmd) const {
 void Protocol::operator<<(const std::string& msg) { // poner const
     // enviar un mensaje (server-side)
 
-    // cambiar por enviar  
+    // cambiar por enviar msg por el socket
     answer = msg;
 
 }
 
 void Protocol::operator>>(std::string& msg) const {
     // recibir un mensaje (client-side)
+
+    // cambiar por recibir msg del socket
     msg = answer;
 }
 
