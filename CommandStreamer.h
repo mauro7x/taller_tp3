@@ -5,6 +5,9 @@
 #include <fstream>
 
 #include "Command.h"
+#include "Guess.h"
+#include "Help.h"
+#include "Surrender.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -42,11 +45,14 @@ class CommandStreamer {
         CommandStreamer& operator=(CommandStreamer&& other) = delete;
 
         /**
-         * Descripcion: parsea la entrada del file apuntado por fd a un comando
+         * Descripcion: parsea la entrada del file apuntado por fd a un
+         * comando, alocandolo en el HEAP y devolviendo su puntero.
          * Parametros: -
-         * Retorno: instancia de comando.
+         * Retorno: puntero a comando en el HEAP.
+         * 
+         * SE DEBE LIBERAR LA MEMORIA DEL PUNTERO RECIBIDO.
         */
-        Command operator()();
+        Command* operator()();
 
         /** 
          * Descripcion: destructor.

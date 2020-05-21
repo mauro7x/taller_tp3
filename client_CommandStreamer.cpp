@@ -10,12 +10,10 @@
 CommandStreamer::CommandStreamer(FILE* fd) : fd(fd) {}
 
 
-Command CommandStreamer::operator()() {
+Command* CommandStreamer::operator()() {
     // parsear un comando
-    Command new_cmd;
 
-    // lo devolvemos
-    return new_cmd;
+    return new Guess(87);
 }
 
 CommandStreamer::~CommandStreamer() {}
