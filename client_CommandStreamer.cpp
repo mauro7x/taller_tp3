@@ -18,37 +18,30 @@ CommandStreamer::CommandStreamer(std::istream& stream) : stream(stream) {}
 
 
 Command* CommandStreamer::operator()() {
-    try {
-        std::string input;
-        std::getline(stream, input);
-        while(!stream.eof()) {
-            if (input == HELP_INPUT) {
-                return new Help();
+    std::string input;
+    std::getline(stream, input);
+    while(!stream.eof()) {
+        if (input == HELP_INPUT) {
+            return new Help();
 
-            } else if (input == SURRENDER_INPUT) {
-                return new Surrender();
+        } else if (input == SURRENDER_INPUT) {
+            return new Surrender();
 
-            } else {
-                try {
-                    int n_received = std::stoi(input);
-                    unsigned short int n = _convert(n_received);
-                    
-                    return new Guess(n);
-                } catch (std::invalid_argument& e) {
-                    std::cout << UNKNOWN_COMMAND_ERROR_MSG << std::endl;
-                } catch (...) {
-                    std::cout << UNKNOWN_COMMAND_ERROR_MSG << std::endl;
-                }
+        } else {
+            try {
+                int n_received = std::stoi(input);
+                unsigned short int n = _convert(n_received);
+                
+                return new Guess(n);
+            } catch (std::invalid_argument& e) {
+                std::cout << UNKNOWN_COMMAND_ERROR_MSG << std::endl;
+            } catch (...) {
+                std::cout << UNKNOWN_COMMAND_ERROR_MSG << std::endl;
             }
-            std::getline(stream, input);
         }
-        throw Exception("No hay mas comandos que procesar.");
-    } catch (const Exception& e) {
-        throw e;
-    } catch (...) {
-        throw Exception("Error desconocido. "
-                        "Funcion: CommandStreamer::operator()");
-    } 
+        std::getline(stream, input);
+    }
+    throw Exception("No hay mas comandos que procesar.");
 }
 
 
