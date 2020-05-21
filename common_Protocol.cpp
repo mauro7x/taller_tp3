@@ -35,13 +35,8 @@ void Protocol::operator<<(Command* cmd) {
     std::string serialized = _serialize(cmd);
     delete cmd;
 
-    try {
-        // cambiar por enviar al socket
-        cmd_serialized = serialized;
-
-    } catch (const Exception& e) {
-        throw e;
-    }
+    // cambiar por enviar al socket
+    cmd_serialized = serialized;
 }
 
 

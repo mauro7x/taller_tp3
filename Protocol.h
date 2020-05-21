@@ -5,7 +5,6 @@
 #include <string>
 #include <arpa/inet.h>
 
-
 #include "Exception.h"
 
 #include "Command.h"
@@ -15,7 +14,6 @@
 
 // PROXY INCLUDES (ir borrando):
 #include <iostream>
-#include "defs.h"
 
 // ----------------------------------------------------------------------------
 
