@@ -8,6 +8,14 @@
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
+// Tipos de comandos:
+#define HELP 'h'
+#define SURRENDER 's'
+#define GUESS 'n'
+
+// Flags de estado:
+enum state {CONTINUE, WIN, LOSS};
+// ----------------------------------------------------------------------------
 
 /**
  * Documentar.
@@ -19,6 +27,7 @@ class Command {
     public:
         /** 
          * Descripcion: constructor.
+         * 
          * Parametros: -
         */
         Command(char id);
@@ -36,16 +45,10 @@ class Command {
         Command& operator=(Command&& other) = delete;
 
         /**
-         * Descripcion: serializa el comando en un string, incluyendo el tipo
-         * y variando el resto para cada comando.
-         * Parametros: -
-         * Retorno: string representando al comando.
-        */
-        //virtual std::string serialize() const = 0;
-
-        /**
          * Descripcion: retorna el tipo del comando.
+         * 
          * Parametros: -
+         * 
          * Retorno: char identificador del comando.
         */
         char type() const;
@@ -53,11 +56,18 @@ class Command {
         /**
          * Descripcion: se sobrecarga el operador () para la ejecución del
          * comando. Cada tipo de parametro redefine las acciones a ejecutar
-         * cuando se use.
-         * Parametros: -
-         * Retorno -
+         * cuando se use. Se actualiza reply con información.
+         * 
+         * Parametros: numero secreto a adivinar, respuesta a llenar pasada
+         * por referencia, intentos restantes pasados por referencia.
+         * 
+         * Retorno: CONTINUE == continuar.
+         *          WIN == el cliente gano.
+         *          LOSS == el cliente perdió.
         */
-        virtual std::string operator()(unsigned short secret_number) const = 0;
+        virtual state operator()(unsigned short int secret_number,
+                               std::string& reply,
+                               unsigned int& remaining_attempts) const = 0;
 
         /** 
          * Descripcion: destructor.
