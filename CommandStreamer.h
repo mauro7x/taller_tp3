@@ -2,7 +2,12 @@
 #define __COMMAND_STREAMER_H__
 
 // ----------------------------------------------------------------------------
-#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+
+#include "Exception.h"
+#include "defs.h"
 
 #include "Command.h"
 #include "Guess.h"
@@ -21,16 +26,25 @@
 */
 class CommandStreamer {
     private:
-        FILE* fd;
+        std::istream& stream;
+
+        /**
+         * Descripcion: intenta convertir un entero a un unsigned short int,
+         * es decir un entero de 2 bytes. En caso de no poder, se lanza
+         * una excepción.
+         * Parametros: entero a convertir.
+         * Retorno: entero convertido.
+        */
+        unsigned short int _convert(int n_received);
 
     public:
         /** 
          * Descripcion: constructor.
-         * Parametros: file descriptor del que streamear comandos.
+         * Parametros: stream pasado por referencia.
          * 
          * NO SE HACE CARGO DE CERRARLO.
         */
-        CommandStreamer(FILE* fd);
+        CommandStreamer(std::istream& stream);
 
         /** 
          * Deshabilitamos el constructor por copia y su operador.
