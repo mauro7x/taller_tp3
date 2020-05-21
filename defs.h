@@ -2,16 +2,9 @@
 #define __DEFS_H__
 
 // ----------------------------------------------------------------------------
-/**
- * Se incluyen en este header todos los defines de propósito general
- * para el trabajo práctico.
-*/
-// ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
-// Codigos de retorno
-#define ERROR 1
-#define USAGE_ERROR 1
+// MENSAJES
 
 // Mensajes de error
 #define USAGE_ERROR_MSG "Error: argumentos invalidos."
@@ -36,10 +29,21 @@
                                                   " regular"
 #define ALL_INCORRECT_MSG "3 mal"
 
+// ----------------------------------------------------------------------------
 
-// Rangos de numeros permitidos
+// ----------------------------------------------------------------------------
+// CONFIGURACION
+
+// Rango de numeros permitidos
 #define MIN_ALLOWED_NUMBER 100
 #define MAX_ALLOWED_NUMBER 999
+
+// Intentos permitidos
+#define ATTEMPTS 10
+// ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
+// OTROS
 
 // Rangos de representacion de unsigned short int
 #define MIN_POSSIBLE_NUMBER 0
