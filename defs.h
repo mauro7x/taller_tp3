@@ -15,6 +15,8 @@
 
 // Mensajes de error
 #define USAGE_ERROR_MSG "Error: argumentos invalidos."
+#define UNKNOWN_COMMAND_ERROR_MSG "Error: comando inválido. "\
+                                  "Escriba AYUDA para obtener ayuda"
 
 // Mensajes del servidor
 #define WIN_MSG "Ganaste"
@@ -29,6 +31,14 @@
 #define HELP 'h'
 #define SURRENDER 's'
 #define GUESS 'n'
+
+// Input de comandos correcto
+#define HELP_INPUT "AYUDA"
+#define SURRENDER_INPUT "RENDIRSE"
+
+// Rangos de representacion de unsigned short int
+#define MIN_POSSIBLE_NUMBER 0
+#define MAX_POSSIBLE_NUMBER 65535
 
 // ----------------------------------------------------------------------------
 
