@@ -11,16 +11,22 @@ class Help : public Command {
     public:
         /** 
          * Descripcion: constructor.
+         * 
          * Parametros: -
         */
         Help();
 
         /**
-         * Descripcion: ejecucion del comando Help.
-         * Parametros: -
-         * Retorno: mensaje respuesta.
+         * Descripcion: se escribe el mensaje HELP_MSG en reply, y se retorna
+         * el state CONTINUE.
+         * 
+         * Parametros: numero secreto a adivinar, respuesta a llenar pasada
+         * por referencia, intentos restantes pasados por referencia.
+         * 
+         * Retorno: state CONTINUE.
         */
-        std::string operator()(unsigned short secret_number) const override;
+        state operator()(unsigned short int secret_number, std::string& reply,
+                         unsigned int& remaining_attempts) const override;
 };
 
 // ----------------------------------------------------------------------------

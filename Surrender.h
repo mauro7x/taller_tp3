@@ -11,16 +11,22 @@ class Surrender : public Command {
     public:
         /** 
          * Descripcion: constructor.
+         * 
          * Parametros: -
         */
         Surrender();
 
         /**
-         * Descripcion: ejecucion del comando Surrender.
-         * Parametros: -
-         * Retorno: mensaje respuesta.
+         * Descripcion: se escribe el mensaje LOSS_MSG en reply, y se retorna
+         * el state LOSS.
+         * 
+         * Parametros: numero secreto a adivinar, respuesta a llenar pasada
+         * por referencia, intentos restantes pasados por referencia.
+         * 
+         * Retorno: state LOSS.
         */
-        std::string operator()(unsigned short secret_number) const override;
+        state operator()(unsigned short int secret_number, std::string& reply,
+                         unsigned int& remaining_attempts) const override;
 };
 
 // ----------------------------------------------------------------------------

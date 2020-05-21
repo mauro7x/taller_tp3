@@ -10,10 +10,12 @@
 Surrender::Surrender() : Command(SURRENDER) {}
 
 
-std::string Surrender::operator()(unsigned short secret_number) const {
-    // SURRENDER ACTION
-    
-    return LOSS_MSG;    
+state Surrender::operator()(unsigned short int secret_number,
+                            std::string& reply,
+                            unsigned int& remaining_attempts) const {
+    reply.clear();
+    reply = LOSS_MSG;
+    return LOSS;
 }
 
 
