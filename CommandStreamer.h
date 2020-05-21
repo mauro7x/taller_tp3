@@ -6,7 +6,9 @@
 #include <sstream>
 #include <string>
 
-#include "Exception.h"
+#include "Exception.h" 
+#include "defs.h"
+
 #include "Command.h"
 #include "Guess.h"
 #include "Help.h"
@@ -37,7 +39,7 @@ class CommandStreamer {
          * 
          * Retorno: entero convertido.
          * 
-         * >PUEDE LANZAR EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         unsigned short int _convert(int n_received);
 
@@ -72,7 +74,7 @@ class CommandStreamer {
          * Retorno: puntero a comando en el HEAP.
          * 
          * >SE DEBE LIBERAR LA MEMORIA DEL PUNTERO RECIBIDO.
-         * >PUEDE LANZAR EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         Command* operator()();
 

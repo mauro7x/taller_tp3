@@ -30,7 +30,7 @@ class Socket {
          * Retorno: -
          * 
          * Se debe liberar la memoria reservada apuntada por address.
-         * >PUEDE LANZAR UNA EXCEPCION (no es necesario liberar address).
+         * >THROW EXPLICITO DE EXCEPTION (no es necesario liberar address).
         */
         void _setServerAddress(const std::string& port, addrinfo** address)
                                const;
@@ -44,7 +44,7 @@ class Socket {
          * Retorno: -
          * 
          * Se debe liberar la memoria reservada apuntada por addresses.
-         * >PUEDE LANZAR UNA EXCEPCION (no es necesario liberar addresses).
+         * >THROW EXPLICITO DE EXCEPTION (no es necesario liberar addresses).
         */
         void _setClientAddresses(const std::string& hostname,
                                  const std::string& port,
@@ -59,7 +59,7 @@ class Socket {
          * Retorno: -
          * 
          * En caso de error libera la memoria de all_addresses.
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         void _setFd(addrinfo* address, addrinfo* all_addresses);
         
@@ -71,7 +71,7 @@ class Socket {
          * Retorno: -
          * 
          * En caso de error libera la memoria de address.
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         void _fixTimeWait(addrinfo* address) const;
 
@@ -83,7 +83,7 @@ class Socket {
          * Retorno: -
          * 
          * Libera la memoria de address.
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         void _bind(addrinfo* address) const;
 
@@ -96,7 +96,7 @@ class Socket {
          * 
          * Retorno: -
          * 
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         void _listen(const int max_queued_clients) const;
 
@@ -109,7 +109,7 @@ class Socket {
          * Retorno: -
          * 
          * Libera la memoria de addresses.
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         void _tryToConnectTo(addrinfo* addresses);
 
@@ -132,7 +132,7 @@ class Socket {
          * 
          * Parametros: puerto , máxima cantidad de clientes encolados.
          * 
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         Socket(const std::string& port, const int max_queued_clients);
 
@@ -156,7 +156,7 @@ class Socket {
          * 
          * Parametros: nombre del host y puerto al que conectarse.
          * 
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         Socket(const std::string& hostname, const std::string& port);
 
@@ -180,7 +180,7 @@ class Socket {
          * Retorno: file descriptor del socket aceptado.
          * 
          * No toma la responsabilidad de cerrar el fd devuelto.
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         int accept() const;
 
@@ -192,7 +192,7 @@ class Socket {
          * Retorno: N, si n>0: cantidad de bytes enviados.
          *             si n==0: el socket fue cerrado.
          * 
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         ssize_t send(const char* source, const ssize_t len) const;
 
@@ -204,7 +204,7 @@ class Socket {
          * Retorno: N, si n>0: cantidad de bytes recibidos.
          *             si n==0: el socket fue cerrado.
          * 
-         * >PUEDE LANZAR UNA EXCEPCION.
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         ssize_t recv(char* buffer, const ssize_t len) const;
 
