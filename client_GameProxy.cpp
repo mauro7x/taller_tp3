@@ -22,34 +22,44 @@ bool GameProxy::isActive() const {
 
 
 void GameProxy::send(Command* cmd) { // poner el const
-    try {
-        protocol << cmd;
+    protocol << cmd;
 
-        // proxy stuff (aca entra el server)
-        {
-            Command* new_cmd = NULL;
-            protocol >> new_cmd;
-            // do stuff de server
-            const Command& r = *new_cmd;
-            protocol << r(200);
-            delete new_cmd;
+    // proxy stuff (aca entra el server)
+    {
+        Command* new_cmd = NULL;
+        protocol >> new_cmd;
+        
+        // do stuff de server
+        const Command& r = *new_cmd;
+        state s;
+        std::string reply;
+
+        s = r(secret_number, reply, remaining_attempts);
+
+        switch (s) {
+            case WIN: {
+                // aumentar contador de victorias
+                break;
+            }
+
+            case LOSS: {
+                // aumentar contador de derrotas
+                break;
+            }
+
+            case CONTINUE: {
+                break;
+            }
         }
 
-    } catch (const Exception& e) {
-        throw e;
+        protocol << reply;
+        delete new_cmd;
     }
 }
 
 
 void GameProxy::recv() {
-    try {
-        protocol >> last_answer;
-
-    } catch (const Exception& e) {
-        throw e;
-    }
-
-    // actualizar is_active
+    protocol >> last_answer;
     _checkIfFinished();
 }
 

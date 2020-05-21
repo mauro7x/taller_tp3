@@ -5,14 +5,9 @@
 #include <iostream>
 #include <string>
 
-#include "Exception.h"
 #include "Protocol.h"
 #include "Command.h"
 #include "defs.h"
-// ----------------------------------------------------------------------------
-
-// ----------------------------------------------------------------------------
-// defines
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -26,16 +21,28 @@ class GameProxy {
         bool is_active;
         std::string last_answer;
 
-        // atributos falsos para el proxy, se van a ir eliminando
+        // server stuff:
+        unsigned short int secret_number = 345;
+        unsigned int remaining_attempts = 10;
 
 
-        // Métodos privados
+        /**
+         * Descripcion: chequea si el ultimo mensaje recibido fue de WIN o
+         * de LOSS, y en caso afirmativo, se actualiza is_active a false.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+        */
         void _checkIfFinished();
 
     public:
         /** 
          * Descripcion: constructor.
+         * 
          * Parametros: -
+         * 
+         * >PUEDE LANZAR EXCEPCION.
         */
         GameProxy();
 
@@ -53,31 +60,42 @@ class GameProxy {
 
         /**
          * Descripcion: verifica si el juego continua.
+         * 
          * Parametros: -
+         * 
          * Retorno: TRUE si el juego continua, FALSE si el juego terminó.
         */
         bool isActive() const;
 
         /**
          * Descripcion: envia un comando al servidor y libera su memoria.
+         * 
          * Parametros: comando a enviar.
+         * 
          * Retorno: -
+         * 
+         * >PUEDE LANZAR EXCEPCION.
         */
-        //void send(Command* cmd) const;
-        void send(Command* cmd);
+        void send(Command* cmd); // agregar el const
 
         /**
          * Descripcion: recibe la respuesta del servidor al ultimo
          * comando enviado y actualiza el valor is_active si el juego
          * termino.
+         * 
          * Parametros: -
+         * 
          * Retorno: -
+         * 
+         * >PUEDE LANZAR EXCEPCION.
         */
         void recv();
 
         /**
          * Descripcion: imprime la ultima respuesta del servidor.
+         * 
          * Parametros: -
+         * 
          * Retorno: -
         */
         void info() const;
