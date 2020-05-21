@@ -3,8 +3,15 @@
 
 // ----------------------------------------------------------------------------
 #include <string>
+#include <arpa/inet.h>
+
+
+#include "Exception.h"
 
 #include "Command.h"
+#include "Guess.h"
+#include "Surrender.h"
+#include "Help.h"
 
 // PROXY INCLUDES (ir borrando):
 #include <iostream>
@@ -21,6 +28,18 @@
 class Protocol {
     private:
 
+        // proxy lies:
+        std::string cmd_serialized;
+        std::string answer;
+
+
+        /**
+         * Descripcion: realiza la serialización correspondiente desde
+         * un puntero a comando a un string serializado listo para enviar.
+         * Parametros: puntero a comando.
+         * Retorno: comando serializado en string.
+        */
+        std::string _serialize(Command* cmd) const;
 
     public:
         /** 
@@ -43,29 +62,35 @@ class Protocol {
 
         /** 
          * Descripcion: sobrecarga del operador << para enviar un comando.
-         * Parametros: comando a enviar.
+         * Parametros: puntero al comando a enviar.
          * Retorno: -
+         * 
+         * LIBERA LA MEMORIA APUNTADA POR EL PUNTERO RECIBIDO.
         */
-        void operator<<(const Command& cmd) const;
+        void operator<<(Command* cmd); // falta agregar const
 
         /** 
          * Descripcion: sobrecarga del operador >> para recibir un comando.
-         * Parametros: -
-         * Retorno: comando a recibir
+         * Aloca la memoria necesaria para el comando recibido en el puntero
+         * recibido por parametro.
+         * Parametros: puntero al comando a recibir.
+         * Retorno: -
+         * 
+         * SE DEBE LIBERAR LA MEMORIA APUNTADA POR EL PUNTERO RETORNADO
         */
-        void operator>>(Command& cmd) const;
+        void operator>>(Command* &cmd) const;
 
         /** 
          * Descripcion: sobrecarga del operador << para enviar un mensaje.
-         * Parametros: string a enviar.
+         * Parametros: string a enviar pasado por referencia.
          * Retorno: -
         */
-        void operator<<(const std::string& msg) const;
+        void operator<<(const std::string& msg); // poner const
 
         /** 
          * Descripcion: sobrecarga del operador >> para recibir un mensaje.
-         * Parametros: -
-         * Retorno: string a recibir
+         * Parametros: string a recibir pasado por referencia
+         * Retorno: -
         */
         void operator>>(std::string& msg) const;
 
