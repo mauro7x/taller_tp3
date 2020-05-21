@@ -21,7 +21,7 @@
 int main(int argc, char* argv[]) {
 
     if (argc != 3) {
-        std::cerr << USAGE_ERROR_MSG << std::endl;
+        std::cout << USAGE_ERROR_MSG << std::endl;
         return USAGE_ERROR;
     }
 
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     std::string port = argv[2];
 
     try {
-        CommandStreamer command_streamer(stdin);
+        CommandStreamer command_streamer(std::cin);
         GameProxy game;
 
         while (game.isActive()) {
@@ -40,6 +40,8 @@ int main(int argc, char* argv[]) {
 
     } catch (const Exception& e) {
         std::cerr << e.what() << "\n";
+        return ERROR;
+    } catch (...) {
         return ERROR;
     }
 
