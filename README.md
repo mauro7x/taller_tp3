@@ -1,4 +1,4 @@
-# Taller de Programación I - TP3 (0/6)
+# Taller de Programación I - TP3 (4/6)
 
 **El TP se encuentra en proceso de realización, se puede ver el progreso realizado en este archivo.**
 
@@ -11,14 +11,14 @@ El plan se basa en el mostrado por Martín en la clase del 19 de mayo.
 ### ~Etapa 1: diseño completo~
 - Observaciones: -.
 
-### Etapa 2: API servidor / API cliente (fakes) [WORKING...]
+### ~Etapa 2: API servidor / API cliente (fakes)~ 
+- Observaciones: la API servidor se probo en el mismo aplicativo cliente.
+
+### ~Etapa 3: resolver la lógica~
 - Observaciones: -.
 
-### Etapa 3: resolver la lógica [WORKING...]
-- Observaciones: -.
-
-### Etapa 4: serialización (en el mismo método)
-- Observaciones: -.
+### ~Etapa 4: serialización (en el mismo método)~
+- Observaciones: por ahora hay un serializer en el protocolo, se podría hacer que los comandos se sepan serializar pero no me gusta.
 
 ### Etapa 5: introducción de Sockets (cliente/servidor)
 - Observaciones: -.
