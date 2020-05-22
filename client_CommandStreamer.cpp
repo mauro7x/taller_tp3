@@ -19,8 +19,7 @@ CommandStreamer::CommandStreamer(std::istream& stream) : stream(stream) {}
 
 Command* CommandStreamer::operator()() {
     std::string input;
-    std::getline(stream, input);
-    while(!stream.eof()) {
+    while(std::getline(stream, input)) {
         if (input == HELP_INPUT) {
             return new Help();
 
@@ -39,7 +38,6 @@ Command* CommandStreamer::operator()() {
                 std::cout << UNKNOWN_COMMAND_ERROR_MSG << std::endl;
             }
         }
-        std::getline(stream, input);
     }
     throw Exception("No hay mas comandos que procesar.");
 }
