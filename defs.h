@@ -19,8 +19,8 @@
 #define WIN_MSG "Ganaste"
 #define LOSS_MSG "Perdiste"
 #define HELP_MSG                                                               \
-    "Comandos válidos:​\n​\tAYUDA: despliega la lista de comandos "       \
-    "válidos​\n\t​RENDIRSE: pierde el juego automáticamente​\n\tXXX: " \
+    "Comandos válidos:\n\tAYUDA: despliega la lista de comandos "       \
+    "válidos\n\tRENDIRSE: pierde el juego automáticamente\n\tXXX: " \
     "Número de 3 cifras a ser enviado al servidor para adivinar el número "  \
     "secreto"
 
@@ -30,8 +30,8 @@
     std::to_string(correct) + " bien, " + std::to_string(regular) + " regular"
 #define ALL_INCORRECT_MSG "3 mal"
 #define RESULTS_MSG(wins, losses)                                   \
-    "Estadísticas:​\n\t​Ganadores:  " + std::to_string(wins) + \
-        "\n\t​Perdedores: " + std::to_string(losses) + "\n"
+    "Estadísticas:\n\tGanadores:  " + std::to_string(wins) + \
+        "\n\tPerdedores: " + std::to_string(losses) + "\n"
 
 // ----------------------------------------------------------------------------
 
