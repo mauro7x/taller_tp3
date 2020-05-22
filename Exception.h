@@ -14,9 +14,6 @@
 
 //-----------------------------------------------------------------------------
 
-/**
- * Excepción general, permite definir un mensaje de error específico.
-*/
 class Exception : public std::exception {
     private:
         std::string msg_error;
