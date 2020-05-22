@@ -8,6 +8,8 @@
 #include "CommandStreamer.h"
 #include "ClientProtocol.h"
 #include "Command.h"
+
+#include "ClosedSocketException.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------

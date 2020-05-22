@@ -4,11 +4,7 @@
 // Métodos privados
 
 bool ClientGame::_continuePlaying() const {
-    if (last_answer == WIN_MSG || last_answer == LOSS_MSG) {
-        return false;
-    }
-
-    return true;
+    return !(last_answer == WIN_MSG || last_answer == LOSS_MSG);
 }
 
 
@@ -52,11 +48,13 @@ ClientGame::ClientGame(const std::string& hostname, const std::string& port) :
 
 
 void ClientGame::play() {
-    while (_continuePlaying()) {
+    try {
+        while (_continuePlaying()) {
         protocol << command_streamer();
         protocol >> last_answer;
         std::cout << last_answer << std::endl;
-    }
+        }
+    } catch (const ClosedSocketException& e) {}
 }
 
 ClientGame::~ClientGame() {}
