@@ -2,15 +2,16 @@
 #define __SERVER_GAME_H__
 
 // ----------------------------------------------------------------------------
+#include <iostream>
 #include <string>
 
 #include "Thread.h"
+#include "Exception.h"
+#include "defs.h"
 
 #include "Results.h"
 #include "ServerProtocol.h"
 #include "Command.h"
-
-#include "defs.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -62,6 +63,14 @@ class ServerGame : public Thread {
         */
         bool isOver();
 
+        /**
+         * Descripcion: se termina la ejecución de forma forzosa.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+        */
+        void stop();
 
         /** 
          * Descripcion: destructor.

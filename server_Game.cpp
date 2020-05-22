@@ -15,36 +15,42 @@ ServerGame::ServerGame(int fd, ProtectedResults& results,
 
 
 void ServerGame::run() {
-    Command* new_cmd = NULL;
-    bool continuePlaying = true;
-    state s;
-    std::string reply;
+    try {
+        Command* new_cmd = NULL;
+        bool continuePlaying = true;
+        state s;
+        std::string reply;
 
-    while (continuePlaying) {
-        protocol >> new_cmd;
-        const Command& r = *new_cmd;
-        s = r(secret_number, reply, remaining_attempts);
+        while (continuePlaying) {
+            protocol >> new_cmd;
+            const Command& r = *new_cmd;
+            s = r(secret_number, reply, remaining_attempts);
 
-        switch (s) {
-            case WIN: {
-                results.addWin();
-                continuePlaying = false;
-                break;
+            switch (s) {
+                case WIN: {
+                    results.addWin();
+                    continuePlaying = false;
+                    break;
+                }
+
+                case LOSS: {
+                    results.addLoss();
+                    continuePlaying = false;
+                    break;
+                }
+
+                case CONTINUE: {
+                    break;
+                }
             }
 
-            case LOSS: {
-                results.addLoss();
-                continuePlaying = false;
-                break;
-            }
-
-            case CONTINUE: {
-                break;
-            }
+            protocol << reply;
+            delete new_cmd;
         }
-
-        protocol << reply;
-        delete new_cmd;
+    } catch (const Exception& e) {
+        std::cerr << e.what() << '\n';
+    } catch (...) {
+        std::cerr << "Error desconocido." << '\n';
     }
 
     is_running = false;
@@ -53,6 +59,11 @@ void ServerGame::run() {
 
 bool ServerGame::isOver() {
     return !is_running;
+}
+
+
+void ServerGame::stop() {
+    protocol.stop();
 }
 
 

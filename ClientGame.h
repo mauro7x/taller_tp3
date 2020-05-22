@@ -9,7 +9,7 @@
 #include "ClientProtocol.h"
 #include "Command.h"
 
-#include "ClosedSocketException.h"
+#include "SocketClosedException.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------

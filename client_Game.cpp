@@ -16,13 +16,11 @@ ClientGame::ClientGame(const std::string& hostname, const std::string& port) :
 
 
 void ClientGame::play() {
-    try {
-        while (_continuePlaying()) {
+    while (_continuePlaying()) {
         protocol << command_streamer();
         protocol >> last_answer;
         std::cout << last_answer << std::endl;
-        }
-    } catch (const ClosedSocketException& e) {}
+    }
 }
 
 ClientGame::~ClientGame() {}
