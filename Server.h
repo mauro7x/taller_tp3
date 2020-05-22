@@ -18,6 +18,16 @@ class Server {
         Accepter accepter;
         ProtectedResults results;
 
+        /**
+         * Descripcion: imprime las estadisticas finales utilizando la macro
+         * definida en defs.h, RESULTS_MSG.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+        */
+        void _printResults();
+
     public:
         /** 
          * Descripcion: constructor.
