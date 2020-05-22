@@ -7,7 +7,8 @@
 // ----------------------------------------------------------------------------
 // API pública
 
-ServerGame::ServerGame(int fd, Results& results, uint16_t secret_number) :
+ServerGame::ServerGame(int fd, ProtectedResults& results,
+                       uint16_t secret_number) :
                        protocol(fd), results(results),
                        secret_number(secret_number),
                        remaining_attempts(ATTEMPTS) {}
