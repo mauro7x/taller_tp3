@@ -11,22 +11,18 @@ ServerProtocol::ServerProtocol(const int fd) : peer(fd) {}
 
 
 void ServerProtocol::operator>>(Command* &cmd) const {
-
-    // CAMBIAR PARA RECIBIR 1 CHAR DEL SOCKET
-    std::string cmd_serialized;
-
-    char type = cmd_serialized[0];
+    char type;
+    if (!peer.recv(&type, sizeof(type))) {
+        throw ClosedSocketException("El cliente cerró el socket.");
+    }
 
     switch (type) {
         case GUESS: {
-            uint16_t number;
-            uint16_t be_number;
-
-            // cambiar por recibir un uint16_t del socket
-            ((unsigned char*) &be_number)[0] = cmd_serialized[1];
-            ((unsigned char*) &be_number)[1] = cmd_serialized[2];
+            uint16_t number, be_number;
+            if (!(peer >> be_number)) {
+                throw ClosedSocketException("El cliente cerró el socket.");
+            }
             number = ntohs(be_number);
-
             cmd = new Guess(number);
             break;
         }
@@ -45,8 +41,10 @@ void ServerProtocol::operator>>(Command* &cmd) const {
 
 
 void ServerProtocol::operator<<(const std::string& msg) const {
-    // ENVIAR MENSAJE AL SOCKET
-
+    uint16_t be_len, len = msg.size();
+    be_len = htons(len);
+    peer << be_len;
+    peer << msg;
 }
 
 

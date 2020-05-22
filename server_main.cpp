@@ -9,6 +9,7 @@
 // ----------------------------------------------------------------------------
 #include <iostream>
 
+#include "Results.h"
 #include "ServerGame.h"
 #include "Exception.h"
 
@@ -34,8 +35,9 @@ int main(int argc, char* argv[]) {
     try {
         // todo esto despues hay que ver donde lo hacemos, esto es para
         // probar funcionalidad.
+        Results results;
         Socket accepter(hostname, 1);
-        ServerGame game(accepter.accept(), NUMBER);
+        ServerGame game(accepter.accept(), results, NUMBER);
         game.run();
 
         accepter.shutdown();

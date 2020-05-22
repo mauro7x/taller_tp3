@@ -10,6 +10,8 @@
 #include "Guess.h"
 #include "Surrender.h"
 #include "Help.h"
+
+#include "ClosedSocketException.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -40,8 +42,12 @@ class ServerProtocol {
 
         /** 
          * Descripcion: sobrecarga del operador >> para recibir un comando.
+         * Recibe primero un char que indica el tipo, y si se trata de un Guess
+         * recibe un uint16_t.
          * Aloca la memoria necesaria para el comando recibido en el puntero
          * recibido por parametro.
+         * En caso de que se cierre el socket, se lanza la excepcion
+         * ClosedSocketException.
          * 
          * Parametros: puntero al comando a recibir.
          * 
@@ -53,6 +59,8 @@ class ServerProtocol {
 
         /** 
          * Descripcion: sobrecarga del operador << para enviar un mensaje.
+         * Envia primero la longitud del mismo como un uint16_t, y luego
+         * el mensaje.
          * 
          * Parametros: string a enviar pasado por referencia.
          * 

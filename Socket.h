@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <cstdint>
 
 #include "Exception.h"
 //-----------------------------------------------------------------------------
@@ -207,6 +208,21 @@ class Socket {
          * >THROW EXPLICITO DE EXCEPTION.
         */
         ssize_t recv(char* buffer, const ssize_t len) const;
+
+        //---------------------------------------------------------------------
+        // Sobrecarga de operadores >> << para envio y recepción de distintos
+        // tipos de datos específicos. Aplica la misma documentación para
+        // >> que para recv, y para << que para send.
+
+        ssize_t operator<<(uint16_t n) const;
+        ssize_t operator>>(uint16_t& n) const;
+
+        ssize_t operator<<(const std::string& msg) const;
+
+        ssize_t operator<<(char c) const;
+        ssize_t operator>>(char& c) const;
+
+        //---------------------------------------------------------------------
 
         /** 
          * Descripcion: cierra uno o ambos canales del socket.

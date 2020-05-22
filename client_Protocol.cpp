@@ -3,25 +3,6 @@
 // ----------------------------------------------------------------------------
 // Métodos privados
 
-std::string ClientProtocol::_serialize(Command* cmd) const {
-    std::string serialized;
-    char type = cmd->type();
-
-    serialized += type;
-
-    if (type == GUESS) {
-        // Agregamos el numero en big endian
-        uint16_t number;
-        number = ((Guess*) cmd)->number();
-        number = htons(number);
-
-        serialized += ((unsigned char*) &number)[0];
-        serialized += ((unsigned char*) &number)[1];
-    }
-
-    return serialized;
-}
-
 
 // ----------------------------------------------------------------------------
 // API pública
@@ -31,18 +12,41 @@ ClientProtocol::ClientProtocol(const std::string& hostname, const std::string& p
 
 
 void ClientProtocol::operator<<(Command* cmd) const {
-    std::string serialized = _serialize(cmd);
+    uint16_t be_number;
+    char type = cmd->type();
+    
+    if (type == GUESS) {
+        uint16_t number = ((Guess*) cmd)->number();
+        be_number = htons(number);
+    }
+
     delete cmd;
 
-    socket.send(serialized.c_str(), serialized.size());
+    socket << type;
+    if (type == GUESS) {
+        socket << be_number;
+    }
 }
 
 
 void ClientProtocol::operator>>(std::string& msg) const {
-    // RECIBIR MENSAJE DEL SOCKET
+    uint16_t len, be_len;
+    if (!(socket >> be_len)) {
+        throw ClosedSocketException("El servidor cerró el socket.");
+    }
+    len = ntohs(be_len);
 
+    msg.clear();
+    msg.reserve(len);
+
+    char c;
+    for (uint16_t i = 0; i < len; i++) {
+        if (!socket.recv(&c, sizeof(char))) {
+            throw ClosedSocketException("El servidor cerró el socket.");
+        }
+        msg += c;
+    }
 }
-
 
 
 ClientProtocol::~ClientProtocol() {}

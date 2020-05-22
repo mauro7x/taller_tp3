@@ -4,6 +4,7 @@
 // ----------------------------------------------------------------------------
 #include <string>
 
+#include "Results.h"
 #include "ServerProtocol.h"
 #include "Command.h"
 
@@ -15,6 +16,7 @@
 class ServerGame {
     private:
         ServerProtocol protocol;
+        Results& results;
         uint16_t secret_number;
         unsigned int remaining_attempts;
 
@@ -25,7 +27,7 @@ class ServerGame {
          * 
          * Parametros: fd del socket peer, numero secreto, intentos restantes.
         */
-        ServerGame(int fd, uint16_t secret_number);
+        ServerGame(int fd, Results& results, uint16_t secret_number);
 
         /** 
          * Deshabilitamos el constructor por copia y su operador.

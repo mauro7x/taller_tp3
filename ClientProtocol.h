@@ -18,16 +18,6 @@ class ClientProtocol {
     private:
         Socket socket;
 
-        /**
-         * Descripcion: realiza la serialización correspondiente desde
-         * un puntero a comando a un string serializado listo para enviar.
-         * 
-         * Parametros: puntero a comando.
-         * 
-         * Retorno: comando serializado en string.
-        */
-        std::string _serialize(Command* cmd) const;
-
     public:
         /**
          * Descripcion: constructor. Crea el Socket cliente, conectandolo
@@ -51,6 +41,8 @@ class ClientProtocol {
 
         /** 
          * Descripcion: sobrecarga del operador << para enviar un comando.
+         * Envia el comando segun el protocolo, enviando primero el tipo como
+         * un char, y en caso de ser un Guess, envia el uint16_t.
          * 
          * Parametros: puntero al comando a enviar.
          * 
@@ -62,6 +54,8 @@ class ClientProtocol {
 
         /** 
          * Descripcion: sobrecarga del operador >> para recibir un mensaje.
+         * Recibe primero la longitud del mismo en un uint16_t, y luego
+         * el mensaje en sí.
          * En caso de que se cierre el socket, se lanza la excepcion
          * ClosedSocketException.
          * 

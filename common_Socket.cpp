@@ -198,13 +198,6 @@ ssize_t Socket::send(const char* source, const ssize_t len) const {
 }
 
 
-/*
-ssize_t Socket::operator<<(const std::string& msg) const {
-    return send(msg.c_str(), msg.size());
-}
-*/
-
-
 ssize_t Socket::recv(char* buffer, const ssize_t len) const {
     int total_received = 0;
     int last_received = 0;
@@ -226,21 +219,38 @@ ssize_t Socket::recv(char* buffer, const ssize_t len) const {
 }
 
 
-/*
-ssize_t Socket::operator>>(std::string& msg) const {
-    msg.clear();
-    char received_char;
-    ssize_t received = 0;
+//-----------------------------------------------------------------------------
 
-    received += recv(&received_char, 1);
-    while (received_char != '\0') {
-        msg += received_char;
-        received += recv(&received_char, 1);
-    }
-    msg.shrink_to_fit();
-    return received;
+ssize_t Socket::operator<<(uint16_t n) const {
+    return send((char*) &n, sizeof(n));
 }
-*/
+
+
+ssize_t Socket::operator>>(uint16_t& n) const {
+    uint16_t received;
+    ssize_t n_received;
+    n_received = recv((char*) &received, sizeof(received));
+    n = received;
+    return n_received;
+}
+
+
+ssize_t Socket::operator<<(const std::string& msg) const {
+    return send(msg.c_str(), msg.size());
+}
+
+
+ssize_t Socket::operator<<(char c) const {
+    return send(&c, sizeof(c));
+}
+
+
+ssize_t Socket::operator>>(char& c) const {
+    return recv(&c, sizeof(c));
+}
+
+
+//-----------------------------------------------------------------------------
 
 
 void Socket::shutdown(const int& channel) const {

@@ -7,46 +7,46 @@
 // ----------------------------------------------------------------------------
 // API pública
 
-ServerGame::ServerGame(int fd, uint16_t secret_number) :
-                       protocol(fd), secret_number(secret_number),
+ServerGame::ServerGame(int fd, Results& results, uint16_t secret_number) :
+                       protocol(fd), results(results),
+                       secret_number(secret_number),
                        remaining_attempts(ATTEMPTS) {}
 
 
-/* SERVER STUFF
+void ServerGame::run() {
     Command* new_cmd = NULL;
-    protocol >> new_cmd;
-    
-    // do stuff de server
-    const Command& r = *new_cmd;
+    bool continuePlaying = true;
     state s;
     std::string reply;
 
-    s = r(secret_number, reply, remaining_attempts);
+    while (continuePlaying) {
+        protocol >> new_cmd;
+        const Command& r = *new_cmd;
+        s = r(secret_number, reply, remaining_attempts);
 
-    switch (s) {
-        case WIN: {
-            // aumentar contador de victorias
-            break;
+        switch (s) {
+            case WIN: {
+                results.addWin();
+                continuePlaying = false;
+                break;
+            }
+
+            case LOSS: {
+                results.addLoss();
+                continuePlaying = false;
+                break;
+            }
+
+            case CONTINUE: {
+                break;
+            }
         }
 
-        case LOSS: {
-            // aumentar contador de derrotas
-            break;
-        }
-
-        case CONTINUE: {
-            break;
-        }
+        protocol << reply;
+        delete new_cmd;
     }
-
-    protocol << reply;
-    delete new_cmd;
-*/
-
-
-void ServerGame::run() {
-    
 }
+
 
 ServerGame::~ServerGame() {}
 
