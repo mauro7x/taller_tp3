@@ -10,13 +10,13 @@
 #include <iostream>
 
 #include "Results.h"
+#include "Numbers.h"
 #include "ServerGame.h"
 #include "Exception.h"
 
 
 // just for test:
 #include "Socket.h"
-#define NUMBER 465
 
 // ----------------------------------------------------------------------------
 
@@ -35,10 +35,16 @@ int main(int argc, char* argv[]) {
     try {
         // todo esto despues hay que ver donde lo hacemos, esto es para
         // probar funcionalidad.
+        Numbers numbers(numbers_filepath);
         Results results;
-        Socket accepter(hostname, 1);
-        ServerGame game(accepter.accept(), results, NUMBER);
+
+        Socket accepter(hostname, 0);
+
+        ServerGame game(accepter.accept(), results, numbers());
         game.run();
+
+        ServerGame game2(accepter.accept(), results, numbers());
+        game2.run();
 
         accepter.shutdown();
 
