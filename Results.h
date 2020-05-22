@@ -7,14 +7,14 @@
 
 // ----------------------------------------------------------------------------
 /**
- * Recurso compartido: Results.
+ * Recurso compartido: ProtectedResults.
  * 
  * Al ser un objeto compartido entre hilos, utiliza MUTEX como mecanismo de
  * sincronización de acceso. Todos los métodos que se ofrecen en su API
  * están protegidos y pueden ser utilizados con la garantía de que no se
  * generaran condition-races.
 */
-class Results {
+class ProtectedResults {
     private:
         unsigned int n_wins, n_losses;
         std::mutex m;
@@ -25,19 +25,19 @@ class Results {
          * 
          * Parametros: -
         */
-        Results();
+        ProtectedResults();
 
         /** 
          * Deshabilitamos el constructor por copia y su operador.
         */
-        Results(const Results&) = delete;
-        Results& operator=(const Results&) = delete;
+        ProtectedResults(const ProtectedResults&) = delete;
+        ProtectedResults& operator=(const ProtectedResults&) = delete;
 
         /** 
          * Deshabilitamos el constructor por movimiento y su operador.
         */
-        Results(Results&& other) = delete;
-        Results& operator=(Results&& other) = delete;
+        ProtectedResults(ProtectedResults&& other) = delete;
+        ProtectedResults& operator=(ProtectedResults&& other) = delete;
 
         /** 
          * Descripcion: agrega una victoria.
@@ -78,7 +78,7 @@ class Results {
         /** 
          * Descripcion: destructor.
         */
-        ~Results();
+        ~ProtectedResults();
 };
 
 // ----------------------------------------------------------------------------

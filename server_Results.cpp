@@ -7,33 +7,33 @@
 // ----------------------------------------------------------------------------
 // API pública
 
-Results::Results() : n_wins(0), n_losses(0) {}
+ProtectedResults::ProtectedResults() : n_wins(0), n_losses(0) {}
 
 
-void Results::addWin() {
+void ProtectedResults::addWin() {
     std::unique_lock<std::mutex> l(m);
     n_wins++;
 }
 
 
-void Results::addLoss() {
+void ProtectedResults::addLoss() {
     std::unique_lock<std::mutex> l(m);
     n_losses++;
 }
 
 
-unsigned int Results::wins() {
+unsigned int ProtectedResults::wins() {
     std::unique_lock<std::mutex> l(m);
     return n_wins;
 }
 
 
-unsigned int Results::losses() {
+unsigned int ProtectedResults::losses() {
     std::unique_lock<std::mutex> l(m);
     return n_losses;
 }
 
 
-Results::~Results() {}
+ProtectedResults::~ProtectedResults() {}
 
 // ----------------------------------------------------------------------------
