@@ -11,7 +11,7 @@
 #include "Surrender.h"
 #include "Help.h"
 
-#include "ClosedSocketException.h"
+#include "SocketClosedException.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------

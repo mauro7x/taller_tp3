@@ -32,7 +32,7 @@ void ClientProtocol::operator<<(Command* cmd) const {
 void ClientProtocol::operator>>(std::string& msg) const {
     uint16_t len, be_len;
     if (!(socket >> be_len)) {
-        throw ClosedSocketException("El servidor cerró el socket.");
+        throw SocketClosedException("El servidor cerró el socket.");
     }
     len = ntohs(be_len);
 
@@ -42,7 +42,7 @@ void ClientProtocol::operator>>(std::string& msg) const {
     char c;
     for (uint16_t i = 0; i < len; i++) {
         if (!socket.recv(&c, sizeof(char))) {
-            throw ClosedSocketException("El servidor cerró el socket.");
+            throw SocketClosedException("El servidor cerró el socket.");
         }
         msg += c;
     }

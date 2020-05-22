@@ -13,14 +13,14 @@ ServerProtocol::ServerProtocol(const int fd) : peer(fd) {}
 void ServerProtocol::operator>>(Command* &cmd) const {
     char type;
     if (!peer.recv(&type, sizeof(type))) {
-        throw ClosedSocketException("El cliente cerró el socket.");
+        throw SocketClosedException("El cliente cerró el socket.");
     }
 
     switch (type) {
         case GUESS: {
             uint16_t number, be_number;
             if (!(peer >> be_number)) {
-                throw ClosedSocketException("El cliente cerró el socket.");
+                throw SocketClosedException("El cliente cerró el socket.");
             }
             number = ntohs(be_number);
             cmd = new Guess(number);

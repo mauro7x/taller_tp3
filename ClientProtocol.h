@@ -9,7 +9,7 @@
 #include "Command.h"
 #include "Guess.h"
 
-#include "ClosedSocketException.h"
+#include "SocketClosedException.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
