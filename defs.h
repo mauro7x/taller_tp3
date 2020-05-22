@@ -12,6 +12,8 @@
                                   "Escriba AYUDA para obtener ayuda"
 #define INVALID_NUMBER_ERROR_MSG "Número inválido. "\
                                  "Debe ser de 3 cifras no repetidas"
+#define INVALID_FORMAT_INPUT_MSG "Error: formato de los números inválidos"
+#define OUT_OF_RANGE_INPUT_MSG "Error: archivo con números fuera de rango"
 
 // Mensajes del servidor
 #define WIN_MSG "Ganaste"
