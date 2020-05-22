@@ -3,12 +3,10 @@
 // ----------------------------------------------------------------------------
 // Métodos privados
 
-
 // ----------------------------------------------------------------------------
 // API pública
 
 Help::Help() : Command(HELP) {}
-
 
 state Help::operator()(uint16_t secret_number, std::string& reply,
                        unsigned int& remaining_attempts) const {
@@ -16,6 +14,5 @@ state Help::operator()(uint16_t secret_number, std::string& reply,
     reply = HELP_MSG;
     return CONTINUE;
 }
-
 
 // ----------------------------------------------------------------------------

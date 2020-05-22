@@ -5,17 +5,17 @@
 
 uint16_t CommandStreamer::_convert(int n_received) {
     if (n_received > MAX_POSSIBLE_NUMBER || n_received < MIN_POSSIBLE_NUMBER) {
-        throw std::invalid_argument("El numero no se puede representar en "
-                                    "2 bytes.");
+        throw std::invalid_argument(
+            "El numero no se puede representar en "
+            "2 bytes.");
     }
-    return (uint16_t) n_received;
+    return (uint16_t)n_received;
 }
 
 // ----------------------------------------------------------------------------
 // API pública
 
 CommandStreamer::CommandStreamer(std::istream& stream) : stream(stream) {}
-
 
 Command* CommandStreamer::operator()() {
     std::string input;
@@ -30,7 +30,7 @@ Command* CommandStreamer::operator()() {
             try {
                 int n_received = std::stoi(input);
                 uint16_t n = _convert(n_received);
-                
+
                 return new Guess(n);
             } catch (std::invalid_argument& e) {
                 std::cout << UNKNOWN_COMMAND_ERROR_MSG << std::endl;
@@ -42,8 +42,6 @@ Command* CommandStreamer::operator()() {
     throw Exception("No hay mas comandos que procesar.");
 }
 
-
 CommandStreamer::~CommandStreamer() {}
-
 
 // ----------------------------------------------------------------------------

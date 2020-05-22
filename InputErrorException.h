@@ -10,10 +10,10 @@
 //-----------------------------------------------------------------------------
 
 class InputErrorException : public Exception {
-    public:
-        explicit InputErrorException(const std::string msg_error) noexcept :
-                                       Exception(msg_error) {}
+   public:
+    explicit InputErrorException(const std::string msg_error) noexcept
+        : Exception(msg_error) {}
 };
 
 //-----------------------------------------------------------------------------
-#endif // __INPUT_ERROR_EXCEPTION_H__
+#endif  // __INPUT_ERROR_EXCEPTION_H__

@@ -10,7 +10,6 @@ void Accepter::_acceptOneGame() {
     active_games.push_back(new_game);
 }
 
-
 void Accepter::_joinAndFreeFinishedGames() {
     std::vector<ServerGame*> tmp;
     std::vector<ServerGame*>::iterator it = active_games.begin();
@@ -27,7 +26,6 @@ void Accepter::_joinAndFreeFinishedGames() {
     active_games.swap(tmp);
 }
 
-
 void Accepter::_joinGames() {
     std::vector<ServerGame*>::iterator it = active_games.begin();
     for (; it != active_games.end(); it++) {
@@ -35,7 +33,6 @@ void Accepter::_joinGames() {
         delete (*it);
     }
 }
-
 
 void Accepter::_stopGames() {
     std::vector<ServerGame*>::iterator it = active_games.begin();
@@ -46,16 +43,14 @@ void Accepter::_stopGames() {
     }
 }
 
-
 // ----------------------------------------------------------------------------
 // API pública
 
-Accepter::Accepter(const std::string& port,
-                   const std::string& numbers_filepath,
-                   ProtectedResults& results) :
-                   socket(port, MAX_QUEUED_CLIENTS),
-                   numbers(numbers_filepath), results(results) {}
-
+Accepter::Accepter(const std::string& port, const std::string& numbers_filepath,
+                   ProtectedResults& results)
+    : socket(port, MAX_QUEUED_CLIENTS),
+      numbers(numbers_filepath),
+      results(results) {}
 
 void Accepter::run() {
     try {
@@ -76,14 +71,11 @@ void Accepter::run() {
     }
 }
 
-
 void Accepter::close() {
     socket.shutdown();
     socket.close();
 }
 
-
 Accepter::~Accepter() {}
-
 
 // ----------------------------------------------------------------------------

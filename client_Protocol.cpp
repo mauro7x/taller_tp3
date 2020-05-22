@@ -3,21 +3,19 @@
 // ----------------------------------------------------------------------------
 // Métodos privados
 
-
 // ----------------------------------------------------------------------------
 // API pública
 
 ClientProtocol::ClientProtocol(const std::string& hostname,
-                               const std::string& port) :
-                               socket(hostname, port) {}
-
+                               const std::string& port)
+    : socket(hostname, port) {}
 
 void ClientProtocol::operator<<(Command* cmd) const {
     uint16_t be_number;
     char type = cmd->type();
-    
+
     if (type == GUESS) {
-        uint16_t number = ((Guess*) cmd)->number();
+        uint16_t number = ((Guess*)cmd)->number();
         be_number = htons(number);
     }
 
@@ -28,7 +26,6 @@ void ClientProtocol::operator<<(Command* cmd) const {
         socket << be_number;
     }
 }
-
 
 void ClientProtocol::operator>>(std::string& msg) const {
     uint16_t len, be_len;
@@ -49,14 +46,11 @@ void ClientProtocol::operator>>(std::string& msg) const {
     }
 }
 
-
 void ClientProtocol::stop() {
     socket.shutdown();
     socket.close();
 }
 
-
 ClientProtocol::~ClientProtocol() {}
-
 
 // ----------------------------------------------------------------------------

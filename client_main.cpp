@@ -1,10 +1,10 @@
 /** TP3 - Taller de Programación - CLIENTE
- * 
+ *
  * Alumno: Parafati, Mauro.
  * Padrón: 102749.
  * Año y cuatrimestre: 1C 2020.
  * Repositorio: https://github.com/mauro7x/taller_tp3
-*/
+ */
 
 // ----------------------------------------------------------------------------
 #include <iostream>
@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 
     try {
         ClientGame game(hostname, port);
-        game.play();  
+        game.play();
     } catch (const Exception& e) {
         std::cerr << e.what() << "\n";
         return ERROR;
@@ -39,4 +39,3 @@ int main(int argc, char* argv[]) {
 }
 
 // ----------------------------------------------------------------------------
-

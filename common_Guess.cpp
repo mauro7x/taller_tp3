@@ -13,7 +13,6 @@ bool Guess::_isValid() const {
     return !(d1 == d2 || d1 == d3 || d2 == d3);
 }
 
-
 size_t Guess::_countCorrectDigits(uint16_t secret_number) const {
     size_t correct_digits = 0;
 
@@ -21,18 +20,17 @@ size_t Guess::_countCorrectDigits(uint16_t secret_number) const {
     std::string s_correct = std::to_string(secret_number);
 
     // digitos del intento:
-    char d1 = s_value[0], d2 = s_value[1], d3 = s_value[2];    
+    char d1 = s_value[0], d2 = s_value[1], d3 = s_value[2];
 
     // digitos correctos:
     char c1 = s_correct[0], c2 = s_correct[1], c3 = s_correct[2];
 
-    correct_digits += (int) (d1 == c1);
-    correct_digits += (int) (d2 == c2);
-    correct_digits += (int) (d3 == c3);
+    correct_digits += (int)(d1 == c1);
+    correct_digits += (int)(d2 == c2);
+    correct_digits += (int)(d3 == c3);
 
     return correct_digits;
 }
-
 
 size_t Guess::_countRegularDigits(uint16_t secret_number) const {
     size_t regular_digits = 0;
@@ -41,18 +39,17 @@ size_t Guess::_countRegularDigits(uint16_t secret_number) const {
     std::string s_correct = std::to_string(secret_number);
 
     // digitos del intento:
-    char d1 = s_value[0], d2 = s_value[1], d3 = s_value[2];    
+    char d1 = s_value[0], d2 = s_value[1], d3 = s_value[2];
 
     // digitos correctos:
     char c1 = s_correct[0], c2 = s_correct[1], c3 = s_correct[2];
 
-    regular_digits += (int) (d1 == c2 || d1 == c3);
-    regular_digits += (int) (d2 == c1 || d2 == c3);
-    regular_digits += (int) (d3 == c1 || d3 == c2);
+    regular_digits += (int)(d1 == c2 || d1 == c3);
+    regular_digits += (int)(d2 == c1 || d2 == c3);
+    regular_digits += (int)(d3 == c1 || d3 == c2);
 
     return regular_digits;
 }
-
 
 void Guess::_formatReply(std::string& reply, size_t correct_digits,
                          size_t regular_digits) const {
@@ -69,17 +66,14 @@ void Guess::_formatReply(std::string& reply, size_t correct_digits,
     }
 }
 
-
 // ----------------------------------------------------------------------------
 // API pública
 
 Guess::Guess(uint16_t value) : Command(GUESS), value(value) {}
 
-
 uint16_t Guess::number() const {
     return value;
 }
-
 
 state Guess::operator()(uint16_t secret_number, std::string& reply,
                         unsigned int& remaining_attempts) const {

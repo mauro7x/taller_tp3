@@ -3,14 +3,12 @@
 // ----------------------------------------------------------------------------
 // Métodos privados
 
-
 // ----------------------------------------------------------------------------
 // API pública
 
 ServerProtocol::ServerProtocol(const int fd) : peer(fd) {}
 
-
-void ServerProtocol::operator>>(Command* &cmd) const {
+void ServerProtocol::operator>>(Command*& cmd) const {
     char type;
     if (!peer.recv(&type, sizeof(type))) {
         throw SocketClosedException("El cliente cerró el socket.");
@@ -26,7 +24,7 @@ void ServerProtocol::operator>>(Command* &cmd) const {
             cmd = new Guess(number);
             break;
         }
-        
+
         case HELP: {
             cmd = new Help();
             break;
@@ -39,7 +37,6 @@ void ServerProtocol::operator>>(Command* &cmd) const {
     }
 }
 
-
 void ServerProtocol::operator<<(const std::string& msg) const {
     uint16_t be_len, len = msg.size();
     be_len = htons(len);
@@ -47,16 +44,13 @@ void ServerProtocol::operator<<(const std::string& msg) const {
     peer << msg;
 }
 
-
 void ServerProtocol::stop() {
     peer.shutdown();
     peer.close();
 }
 
-
 ServerProtocol::~ServerProtocol() {
     peer.shutdown();
 }
-
 
 // ----------------------------------------------------------------------------

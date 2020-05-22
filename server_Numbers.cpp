@@ -1,7 +1,6 @@
-#include "Numbers.h"
-
-
 #include <iostream>
+
+#include "Numbers.h"
 
 // ----------------------------------------------------------------------------
 // Métodos privados
@@ -20,17 +19,15 @@ void Numbers::_checkIfValid(const uint64_t& input_number) const {
     }
 }
 
-
 void Numbers::_parseNumbers(std::ifstream& file) {
     uint64_t input_number;
     uint16_t parsed_number;
     while (file >> input_number) {
         _checkIfValid(input_number);
-        parsed_number = (uint16_t) input_number;
+        parsed_number = (uint16_t)input_number;
         numbers.push_back(parsed_number);
     }
 }
-
 
 // ----------------------------------------------------------------------------
 // API pública
@@ -52,7 +49,6 @@ Numbers::Numbers(const std::string& filepath) {
     }
 }
 
-
 uint16_t Numbers::operator()() {
     uint16_t n = *(it++);
     if (it == numbers.end()) {
@@ -61,8 +57,6 @@ uint16_t Numbers::operator()() {
     return n;
 }
 
-
 Numbers::~Numbers() {}
-
 
 // ----------------------------------------------------------------------------
