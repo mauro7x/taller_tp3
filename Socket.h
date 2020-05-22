@@ -10,6 +10,7 @@
 #include <cstdint>
 
 #include "Exception.h"
+#include "SocketClosedException.h"
 //-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
@@ -225,14 +226,23 @@ class Socket {
         //---------------------------------------------------------------------
 
         /** 
-         * Descripcion: cierra uno o ambos canales del socket.
+         * Descripcion: desconecta uno o ambos canales del socket.
          * 
-         * Parametros: canal/es a cerrar, si no se recibe, por defecto se cierran
-         * ambos canales (lectura y escritura).
+         * Parametros: canal/es a desconectar, si no se recibe, por defecto se
+         * desconectan ambos canales (lectura y escritura).
          * 
          * Retorno: -
         */
         void shutdown(const int& channel=SHUT_RDWR) const;
+
+        /** 
+         * Descripcion: cierra el socket si el mismo es válido.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+        */
+        void close();
 
         /** 
          * Descripcion: destructor.

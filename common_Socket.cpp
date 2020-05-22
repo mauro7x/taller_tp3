@@ -171,7 +171,7 @@ Socket& Socket::operator=(Socket&& other) {
 int Socket::accept() const {
     int peer_socket = ::accept(fd, NULL, NULL);
     if (peer_socket == -1) {
-        throw Exception("Error in function: Socket::accept()");
+        throw SocketClosedException("Error in function: Socket::accept()");
     }
     return peer_socket;
 }
@@ -259,6 +259,11 @@ void Socket::shutdown(const int& channel) const {
             throw Exception("Error in function: Socket::shutdown()");
         }
     }
+}
+
+
+void Socket::close() {
+    _closeFdIfValid();
 }
 
 
