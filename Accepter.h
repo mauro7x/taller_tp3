@@ -2,16 +2,18 @@
 #define __ACCEPTER_H__
 
 // ----------------------------------------------------------------------------
+#include <iostream>
 #include <string>
+#include <vector>
 
 #include "Thread.h"
+#include "SocketClosedException.h"
+#include "defs.h"
 
 #include "Socket.h"
 #include "Numbers.h"
 #include "Results.h"
-
-#include "SocketClosedException.h"
-#include "defs.h"
+#include "ServerGame.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -21,6 +23,50 @@ class Accepter : public Thread {
         Socket socket;
         Numbers numbers;
         ProtectedResults& results;
+        std::vector<ServerGame*> active_games;
+
+
+        /**
+         * Descripcion: acepta un nuevo cliente y pone su juego a correr, lo
+         * agrega al vector de games activos.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+         * 
+         * Cuando se cierre el server, se lanzara la excepción
+         * SocketClosedException.
+        */
+        void _acceptOneGame();
+
+        /**
+         * Descripcion: recorre el vector de games activos en busqueda de games
+         * que hayan terminado su ejecución. A estos games, se les hace un join
+         * NO BLOQUEANTE y se libera su memoria.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+        */
+        void _joinAndFreeFinishedGames();
+
+        /**
+         * Descripcion: joinea los games activos.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+        */
+        void _joinGames();
+
+        /**
+         * Descripcion: cierra forzosamente los games activos.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+        */
+        void _stopGames();
 
     public:
         /** 

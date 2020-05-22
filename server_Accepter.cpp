@@ -3,7 +3,49 @@
 // ----------------------------------------------------------------------------
 // Métodos privados
 
-#include <iostream>
+void Accepter::_acceptOneGame() {
+    int peer = socket.accept();
+    ServerGame* new_game = new ServerGame(peer, results, numbers());
+    new_game->start();
+    active_games.push_back(new_game);
+}
+
+
+void Accepter::_joinAndFreeFinishedGames() {
+    std::vector<ServerGame*> tmp;
+    std::vector<ServerGame*>::iterator it = active_games.begin();
+
+    for (; it != active_games.end(); it++) {
+        if ((*it)->isOver()) {
+            (*it)->join();
+            delete (*it);
+        } else {
+            tmp.push_back(*it);
+        }
+    }
+
+    active_games.swap(tmp);
+}
+
+
+void Accepter::_joinGames() {
+    std::vector<ServerGame*>::iterator it = active_games.begin();
+    for (; it != active_games.end(); it++) {
+        (*it)->join();
+        delete (*it);
+    }
+}
+
+
+void Accepter::_stopGames() {
+    std::vector<ServerGame*>::iterator it = active_games.begin();
+    for (; it != active_games.end(); it++) {
+        (*it)->stop();
+        (*it)->join();
+        delete (*it);
+    }
+}
+
 
 // ----------------------------------------------------------------------------
 // API pública
@@ -16,25 +58,23 @@ Accepter::Accepter(const std::string& port,
 
 
 void Accepter::run() {
-    // hilo aceptador
-    int peer;
-
     try {
         while(true) {
-            peer = socket.accept();
-            std::cout << "Se conecto un cliente! peer:" << peer << "\n";
-            // crear el game y ponerlo en la lista
-
-            // for para deletear clientes muertos
-
+            _acceptOneGame();
+            _joinAndFreeFinishedGames();
         }
     } catch (const SocketClosedException& e) {
-        // El socket se cerró: esperemos que terminen
-        // los juegos y salimos
+        // Esperemos que terminen los juegos y salimos
+        _joinGames();
 
     } catch (const Exception& e) {
         // Error grave: liberamos los recursos
+        _stopGames();
+        std::cerr << e.what() << '\n';
         
+    } catch (...) {
+        _stopGames();
+        std::cerr << "Error desconocido." << '\n';
     }
 }
 
