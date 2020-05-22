@@ -116,7 +116,7 @@ void Socket::_tryToConnectTo(addrinfo* addresses) {
 void Socket::_closeFdIfValid() {
     if (fd_valid) {
         fd_valid = false;
-        close(fd);
+        ::close(fd);
     }
 }
 
