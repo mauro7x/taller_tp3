@@ -9,15 +9,8 @@
 // ----------------------------------------------------------------------------
 #include <iostream>
 
-#include "Results.h"
-#include "Numbers.h"
-#include "ServerGame.h"
+#include "Server.h"
 #include "Exception.h"
-
-
-// just for test:
-#include "Socket.h"
-
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -29,24 +22,12 @@ int main(int argc, char* argv[]) {
         return USAGE_ERROR;
     }
 
-    std::string hostname = argv[1];
+    std::string port = argv[1];
     std::string numbers_filepath = argv[2];
 
     try {
-        // todo esto despues hay que ver donde lo hacemos, esto es para
-        // probar funcionalidad.
-        Numbers numbers(numbers_filepath);
-        Results results;
-
-        Socket accepter(hostname, 0);
-
-        ServerGame game(accepter.accept(), results, numbers());
-        game.run();
-
-        ServerGame game2(accepter.accept(), results, numbers());
-        game2.run();
-
-        accepter.shutdown();
+        Server server(port, numbers_filepath);
+        server.run();
 
     } catch (const Exception& e) {
         std::cerr << e.what() << "\n";
@@ -59,4 +40,3 @@ int main(int argc, char* argv[]) {
 }
 
 // ----------------------------------------------------------------------------
-
