@@ -33,6 +33,7 @@ int main(int argc, char* argv[]) {
         std::cerr << e.what() << "\n";
         return ERROR;
     } catch (...) {
+        std::cerr << "Error desconocido." << '\n';
         return ERROR;
     }
 
