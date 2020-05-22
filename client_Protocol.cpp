@@ -49,6 +49,12 @@ void ClientProtocol::operator>>(std::string& msg) const {
 }
 
 
+void ClientProtocol::stop() {
+    socket.shutdown();
+    socket.close();
+}
+
+
 ClientProtocol::~ClientProtocol() {}
 
 

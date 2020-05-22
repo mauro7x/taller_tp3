@@ -48,6 +48,12 @@ void ServerProtocol::operator<<(const std::string& msg) const {
 }
 
 
+void ServerProtocol::stop() {
+    peer.shutdown();
+    peer.close();
+}
+
+
 ServerProtocol::~ServerProtocol() {
     peer.shutdown();
 }

@@ -68,6 +68,15 @@ class ServerProtocol {
         */
         void operator<<(const std::string& msg) const;
 
+        /**
+         * Descripcion: cierra forzosamente la conexión.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
+        */
+        void stop();
+        
         /** 
          * Descripcion: destructor. Apaga el peer socket haciendole shutdown.
         */ 
