@@ -10,7 +10,7 @@
 Surrender::Surrender() : Command(SURRENDER) {}
 
 
-state Surrender::operator()(unsigned short int secret_number,
+state Surrender::operator()(uint16_t secret_number,
                             std::string& reply,
                             unsigned int& remaining_attempts) const {
     reply.clear();

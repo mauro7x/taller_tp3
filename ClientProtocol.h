@@ -8,6 +8,8 @@
 #include "Socket.h"
 #include "Command.h"
 #include "Guess.h"
+
+#include "ClosedSocketException.h"
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -60,13 +62,16 @@ class ClientProtocol {
 
         /** 
          * Descripcion: sobrecarga del operador >> para recibir un mensaje.
+         * En caso de que se cierre el socket, se lanza la excepcion
+         * ClosedSocketException.
          * 
          * Parametros: string a recibir pasado por referencia
          * 
          * Retorno: -
+         * 
+         * >THROW EXPLICITO DE EXCEPTION.
         */
         void operator>>(std::string& msg) const;
-
 
         /** 
          * Descripcion: destructor.

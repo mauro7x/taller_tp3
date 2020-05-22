@@ -9,7 +9,7 @@
 
 class Guess : public Command {
     private:
-        unsigned short int value;
+        uint16_t value;
 
         /**
          * Description: chequea si el valor numérico es valido.
@@ -27,7 +27,7 @@ class Guess : public Command {
          * 
          * Retorno: cantidad de digitos correctos, >= 0.
         */
-        size_t _countCorrectDigits(unsigned short int secret_number) const;
+        size_t _countCorrectDigits(uint16_t secret_number) const;
 
         /**
          * Description: cuenta la cantidad de digitos regulares, es decir,
@@ -37,7 +37,7 @@ class Guess : public Command {
          * 
          * Retorno: cantidad de digitos regulares, >= 0.
         */
-        size_t _countRegularDigits(unsigned short int secret_number) const;
+        size_t _countRegularDigits(uint16_t secret_number) const;
 
         /**
          * Description: formatea la respuesta segun el enunciado.
@@ -56,7 +56,7 @@ class Guess : public Command {
          * 
          * Parametros: valor numerico de 2 bytes del intento.
         */
-        Guess(unsigned short int value);
+        Guess(uint16_t value);
 
         /**
          * Descripcion: retorna el valor numerico del intento.
@@ -65,7 +65,7 @@ class Guess : public Command {
          * 
          * Retorno: valor numerico de 2 bytes.
         */
-        unsigned short int number() const;
+        uint16_t number() const;
 
         /**
          * Descripcion: se ejecuta el intento de adivinar el numero secreto
@@ -78,7 +78,7 @@ class Guess : public Command {
          *          WIN == el cliente gano.
          *          LOSS == el cliente perdió.
         */
-        state operator()(unsigned short int secret_number, std::string& reply,
+        state operator()(uint16_t secret_number, std::string& reply,
                          unsigned int& remaining_attempts) const override;
 };
 

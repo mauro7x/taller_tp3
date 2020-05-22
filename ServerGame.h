@@ -15,7 +15,7 @@
 class ServerGame {
     private:
         ServerProtocol protocol;
-        unsigned short int secret_number;
+        uint16_t secret_number;
         unsigned int remaining_attempts;
 
     public:
@@ -25,7 +25,7 @@ class ServerGame {
          * 
          * Parametros: fd del socket peer, numero secreto, intentos restantes.
         */
-        ServerGame(int fd, unsigned short int secret_number);
+        ServerGame(int fd, uint16_t secret_number);
 
         /** 
          * Deshabilitamos el constructor por copia y su operador.

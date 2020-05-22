@@ -3,12 +3,12 @@
 // ----------------------------------------------------------------------------
 // Métodos privados
 
-unsigned short int CommandStreamer::_convert(int n_received) {
+uint16_t CommandStreamer::_convert(int n_received) {
     if (n_received > MAX_POSSIBLE_NUMBER || n_received < MIN_POSSIBLE_NUMBER) {
         throw std::invalid_argument("El numero no se puede representar en "
                                     "2 bytes.");
     }
-    return (unsigned short int) n_received;
+    return (uint16_t) n_received;
 }
 
 // ----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ Command* CommandStreamer::operator()() {
         } else {
             try {
                 int n_received = std::stoi(input);
-                unsigned short int n = _convert(n_received);
+                uint16_t n = _convert(n_received);
                 
                 return new Guess(n);
             } catch (std::invalid_argument& e) {

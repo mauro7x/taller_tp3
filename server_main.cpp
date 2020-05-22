@@ -39,7 +39,6 @@ int main(int argc, char* argv[]) {
         game.run();
 
         accepter.shutdown();
-        
 
     } catch (const Exception& e) {
         std::cerr << e.what() << "\n";

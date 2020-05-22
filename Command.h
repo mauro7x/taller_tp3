@@ -3,6 +3,7 @@
 
 // ----------------------------------------------------------------------------
 #include <string>
+#include <cstdint>
 
 #include "defs.h"
 // ----------------------------------------------------------------------------
@@ -65,7 +66,7 @@ class Command {
          *          WIN == el cliente gano.
          *          LOSS == el cliente perdió.
         */
-        virtual state operator()(unsigned short int secret_number,
+        virtual state operator()(uint16_t secret_number,
                                std::string& reply,
                                unsigned int& remaining_attempts) const = 0;
 

@@ -31,7 +31,7 @@ class CommandStreamer {
         std::istream& stream;
 
         /**
-         * Descripcion: intenta convertir un entero a un unsigned short int,
+         * Descripcion: intenta convertir un entero a un uint16_t,
          * es decir un entero de 2 bytes. En caso de no poder, se lanza
          * una excepción.
          * 
@@ -41,7 +41,7 @@ class CommandStreamer {
          * 
          * >THROW EXPLICITO DE EXCEPTION.
         */
-        unsigned short int _convert(int n_received);
+        uint16_t _convert(int n_received);
 
     public:
         /** 

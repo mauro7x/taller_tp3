@@ -25,7 +25,7 @@ class Surrender : public Command {
          * 
          * Retorno: state LOSS.
         */
-        state operator()(unsigned short int secret_number, std::string& reply,
+        state operator()(uint16_t secret_number, std::string& reply,
                          unsigned int& remaining_attempts) const override;
 };
 

@@ -11,7 +11,7 @@ std::string ClientProtocol::_serialize(Command* cmd) const {
 
     if (type == GUESS) {
         // Agregamos el numero en big endian
-        unsigned short int number;
+        uint16_t number;
         number = ((Guess*) cmd)->number();
         number = htons(number);
 
@@ -39,9 +39,10 @@ void ClientProtocol::operator<<(Command* cmd) const {
 
 
 void ClientProtocol::operator>>(std::string& msg) const {
-    
     // RECIBIR MENSAJE DEL SOCKET
+
 }
+
 
 
 ClientProtocol::~ClientProtocol() {}

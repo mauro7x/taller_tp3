@@ -45,7 +45,7 @@
 // ----------------------------------------------------------------------------
 // OTROS
 
-// Rangos de representacion de unsigned short int
+// Rangos de representacion de uint16_t
 #define MIN_POSSIBLE_NUMBER 0
 #define MAX_POSSIBLE_NUMBER 65535
 // ----------------------------------------------------------------------------

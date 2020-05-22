@@ -19,10 +19,10 @@ void ServerProtocol::operator>>(Command* &cmd) const {
 
     switch (type) {
         case GUESS: {
-            unsigned short int number;
-            unsigned short int be_number;
+            uint16_t number;
+            uint16_t be_number;
 
-            // cambiar por recibir un unsigned short int del socket
+            // cambiar por recibir un uint16_t del socket
             ((unsigned char*) &be_number)[0] = cmd_serialized[1];
             ((unsigned char*) &be_number)[1] = cmd_serialized[2];
             number = ntohs(be_number);

@@ -14,7 +14,7 @@ bool Guess::_isValid() const {
 }
 
 
-size_t Guess::_countCorrectDigits(unsigned short int secret_number) const {
+size_t Guess::_countCorrectDigits(uint16_t secret_number) const {
     size_t correct_digits = 0;
 
     std::string s_value = std::to_string(value);
@@ -34,7 +34,7 @@ size_t Guess::_countCorrectDigits(unsigned short int secret_number) const {
 }
 
 
-size_t Guess::_countRegularDigits(unsigned short int secret_number) const {
+size_t Guess::_countRegularDigits(uint16_t secret_number) const {
     size_t regular_digits = 0;
 
     std::string s_value = std::to_string(value);
@@ -73,15 +73,15 @@ void Guess::_formatReply(std::string& reply, size_t correct_digits,
 // ----------------------------------------------------------------------------
 // API pública
 
-Guess::Guess(unsigned short int value) : Command(GUESS), value(value) {}
+Guess::Guess(uint16_t value) : Command(GUESS), value(value) {}
 
 
-unsigned short int Guess::number() const {
+uint16_t Guess::number() const {
     return value;
 }
 
 
-state Guess::operator()(unsigned short int secret_number, std::string& reply,
+state Guess::operator()(uint16_t secret_number, std::string& reply,
                         unsigned int& remaining_attempts) const {
     if (!_isValid()) {
         reply.clear();

@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------------------
 // API pública
 
-ServerGame::ServerGame(int fd, unsigned short int secret_number) :
+ServerGame::ServerGame(int fd, uint16_t secret_number) :
                        protocol(fd), secret_number(secret_number),
                        remaining_attempts(ATTEMPTS) {}
 
@@ -46,7 +46,6 @@ ServerGame::ServerGame(int fd, unsigned short int secret_number) :
 
 void ServerGame::run() {
     
-    std::cout << "Ejecución del server terminando!\n";
 }
 
 ServerGame::~ServerGame() {}
