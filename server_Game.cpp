@@ -11,7 +11,7 @@ ServerGame::ServerGame(int fd, ProtectedResults& results,
                        uint16_t secret_number) :
                        protocol(fd), results(results),
                        secret_number(secret_number),
-                       remaining_attempts(ATTEMPTS) {}
+                       remaining_attempts(ATTEMPTS), is_running(true) {}
 
 
 void ServerGame::run() {
@@ -46,6 +46,13 @@ void ServerGame::run() {
         protocol << reply;
         delete new_cmd;
     }
+
+    is_running = false;
+}
+
+
+bool ServerGame::isOver() {
+    return !is_running;
 }
 
 

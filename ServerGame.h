@@ -4,6 +4,8 @@
 // ----------------------------------------------------------------------------
 #include <string>
 
+#include "Thread.h"
+
 #include "Results.h"
 #include "ServerProtocol.h"
 #include "Command.h"
@@ -13,12 +15,13 @@
 
 // ----------------------------------------------------------------------------
 
-class ServerGame {
+class ServerGame : public Thread {
     private:
         ServerProtocol protocol;
         ProtectedResults& results;
         uint16_t secret_number;
         unsigned int remaining_attempts;
+        bool is_running;
 
     public:
         /** 
@@ -42,11 +45,24 @@ class ServerGame {
         ServerGame& operator=(ServerGame&& other) = delete;
 
         /**
-         * Cuando introduzcamos Threads, este metodo sera el hilo principal
-         * de ejecución.
+         * Descripcion: hilo de ejecucion del juego con un cliente.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: -
         */
         void run();
         
+        /**
+         * Descripcion: verifica si el hilo termino de ejecutarse.
+         * 
+         * Parametros: -
+         * 
+         * Retorno: TRUE si el hilo ya termino, FALSE si se esta ejecutando.
+        */
+        bool isOver();
+
+
         /** 
          * Descripcion: destructor.
         */
