@@ -55,7 +55,7 @@ size_t Guess::_countRegularDigits(uint16_t secret_number) const {
 
 
 void Guess::_formatReply(std::string& reply, size_t correct_digits,
-                          size_t regular_digits) const {
+                         size_t regular_digits) const {
     reply.clear();
 
     if (correct_digits > 0 && regular_digits > 0) {
