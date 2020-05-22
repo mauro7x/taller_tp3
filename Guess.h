@@ -2,6 +2,8 @@
 #define __GUESS_H__
 
 // ----------------------------------------------------------------------------
+#include <string>
+
 #include "Command.h"
 // ----------------------------------------------------------------------------
 
@@ -56,7 +58,7 @@ class Guess : public Command {
          * 
          * Parametros: valor numerico de 2 bytes del intento.
         */
-        Guess(uint16_t value);
+        explicit Guess(uint16_t value);
 
         /**
          * Descripcion: retorna el valor numerico del intento.

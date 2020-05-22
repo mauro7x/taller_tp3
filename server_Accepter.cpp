@@ -59,19 +59,17 @@ Accepter::Accepter(const std::string& port,
 
 void Accepter::run() {
     try {
-        while(true) {
+        while (true) {
             _acceptOneGame();
             _joinAndFreeFinishedGames();
         }
     } catch (const SocketClosedException& e) {
         // Esperemos que terminen los juegos y salimos
         _joinGames();
-
     } catch (const Exception& e) {
         // Error grave: liberamos los recursos
         _stopGames();
         std::cerr << e.what() << '\n';
-        
     } catch (...) {
         _stopGames();
         std::cerr << "Error desconocido." << '\n';

@@ -16,7 +16,6 @@
 // ----------------------------------------------------------------------------
 
 int main(int argc, char* argv[]) {
-
     if (argc != 3) {
         std::cout << USAGE_ERROR_MSG << std::endl;
         return USAGE_ERROR;
@@ -27,8 +26,7 @@ int main(int argc, char* argv[]) {
 
     try {
         ClientGame game(hostname, port);
-        game.play();
-        
+        game.play();  
     } catch (const Exception& e) {
         std::cerr << e.what() << "\n";
         return ERROR;

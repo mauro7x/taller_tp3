@@ -148,7 +148,7 @@ class Socket {
          * 
          * Se toma la responsabilidad del cierre del fd.
         */
-        Socket(const int fd);
+        explicit Socket(const int fd);
 
         /** (CLIENT-SIDE)
          * Diseñado para ser utilizado por el CLIENTE para conectarse

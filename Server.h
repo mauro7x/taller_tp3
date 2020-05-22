@@ -3,6 +3,7 @@
 
 // ----------------------------------------------------------------------------
 #include <iostream>
+#include <string>
 
 #include "Thread.h"
 #include "Accepter.h"

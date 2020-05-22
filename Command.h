@@ -31,7 +31,7 @@ class Command {
          * 
          * Parametros: -
         */
-        Command(char id);
+        explicit Command(char id);
 
         /** 
          * Deshabilitamos el constructor por copia y su operador.

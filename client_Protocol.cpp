@@ -7,8 +7,9 @@
 // ----------------------------------------------------------------------------
 // API pública
 
-ClientProtocol::ClientProtocol(const std::string& hostname, const std::string& port) :
-                   socket(hostname, port) {}
+ClientProtocol::ClientProtocol(const std::string& hostname,
+                               const std::string& port) :
+                               socket(hostname, port) {}
 
 
 void ClientProtocol::operator<<(Command* cmd) const {

@@ -57,7 +57,7 @@ class Numbers {
          * 
          * >THROW EXPLICITO DE EXCEPTION.
         */
-        Numbers(const std::string& filepath);
+        explicit Numbers(const std::string& filepath);
 
         /** 
          * Deshabilitamos el constructor por copia y su operador.

@@ -7,7 +7,8 @@
 // Métodos privados
 
 void Numbers::_checkIfValid(const uint64_t& input_number) const {
-    if (input_number < MIN_ALLOWED_NUMBER || input_number > MAX_ALLOWED_NUMBER) {
+    if (input_number < MIN_ALLOWED_NUMBER ||
+        input_number > MAX_ALLOWED_NUMBER) {
         throw InputErrorException(OUT_OF_RANGE_INPUT_MSG);
     }
 
@@ -49,7 +50,6 @@ Numbers::Numbers(const std::string& filepath) {
     if (file.is_open()) {
         throw InputErrorException("El archivo no se pudo cerrar.");
     }
-
 }
 
 

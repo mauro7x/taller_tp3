@@ -16,7 +16,6 @@
 // ----------------------------------------------------------------------------
 
 int main(int argc, char* argv[]) {
-
     if (argc != 3) {
         std::cerr << USAGE_ERROR_MSG << std::endl;
         return USAGE_ERROR;
@@ -28,7 +27,6 @@ int main(int argc, char* argv[]) {
     try {
         Server server(port, numbers_filepath);
         server.run();
-
     } catch (const Exception& e) {
         std::cerr << e.what() << "\n";
         return ERROR;

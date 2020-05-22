@@ -19,7 +19,7 @@ CommandStreamer::CommandStreamer(std::istream& stream) : stream(stream) {}
 
 Command* CommandStreamer::operator()() {
     std::string input;
-    while(std::getline(stream, input)) {
+    while (std::getline(stream, input)) {
         if (input == HELP_INPUT) {
             return new Help();
 

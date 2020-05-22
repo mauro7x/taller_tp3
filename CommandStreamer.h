@@ -51,7 +51,7 @@ class CommandStreamer {
          * 
          * NO SE HACE CARGO DE CERRARLO.
         */
-        CommandStreamer(std::istream& stream);
+        explicit CommandStreamer(std::istream& stream);
 
         /** 
          * Deshabilitamos el constructor por copia y su operador.

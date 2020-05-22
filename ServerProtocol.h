@@ -26,7 +26,7 @@ class ServerProtocol {
          * 
          * Parametros: file descriptor del socket peer valido.
         */
-        ServerProtocol(const int fd);
+        explicit ServerProtocol(const int fd);
 
         /** 
          * Deshabilitamos el constructor por copia y su operador.
