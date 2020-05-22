@@ -30,6 +30,10 @@
                                                   std::to_string(regular) +\
                                                   " regular"
 #define ALL_INCORRECT_MSG "3 mal"
+#define RESULTS_MSG(wins, losses) "Estadísticas:​\n\t​Ganadores:  " +\
+                                  std::to_string(wins) +\
+                                  "\n\t​Perdedores: " +\
+                                  std::to_string(losses) + "\n"
 
 // ----------------------------------------------------------------------------
 
