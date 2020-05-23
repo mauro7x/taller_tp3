@@ -79,12 +79,6 @@ state Guess::operator()(uint16_t secret_number, std::string& reply,
                         unsigned int& remaining_attempts) const {
     remaining_attempts--;
 
-    if (!_isValid()) {
-        reply.clear();
-        reply = INVALID_NUMBER_ERROR_MSG;
-        return CONTINUE;
-    }
-
     if (value == secret_number) {
         reply.clear();
         reply = WIN_MSG;
@@ -95,6 +89,12 @@ state Guess::operator()(uint16_t secret_number, std::string& reply,
         reply.clear();
         reply = LOSS_MSG;
         return LOSS;
+    }
+
+    if (!_isValid()) {
+        reply.clear();
+        reply = INVALID_NUMBER_ERROR_MSG;
+        return CONTINUE;
     }
 
     size_t correct_digits = _countCorrectDigits(secret_number);
