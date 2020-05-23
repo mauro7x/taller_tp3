@@ -46,11 +46,9 @@ void Accepter::_stopGames() {
 // ----------------------------------------------------------------------------
 // API pública
 
-Accepter::Accepter(const std::string& port, const std::string& numbers_filepath,
+Accepter::Accepter(const std::string& port, Numbers& numbers,
                    ProtectedResults& results)
-    : socket(port, MAX_QUEUED_CLIENTS),
-      numbers(numbers_filepath),
-      results(results) {}
+    : socket(port, MAX_QUEUED_CLIENTS), numbers(numbers), results(results) {}
 
 void Accepter::run() {
     try {

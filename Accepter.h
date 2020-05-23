@@ -20,7 +20,7 @@
 class Accepter : public Thread {
    private:
     Socket socket;
-    Numbers numbers;
+    Numbers& numbers;
     ProtectedResults& results;
     std::vector<ServerGame*> active_games;
 
@@ -71,7 +71,7 @@ class Accepter : public Thread {
      * Descripcion: constructor.
      * Parametros: -
      */
-    Accepter(const std::string& port, const std::string& numbers_filepath,
+    Accepter(const std::string& port, Numbers& numbers,
              ProtectedResults& results);
 
     /**

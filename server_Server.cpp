@@ -11,7 +11,7 @@ void Server::_printResults() {
 // API pública
 
 Server::Server(const std::string& port, const std::string& numbers_filepath)
-    : accepter(port, numbers_filepath, results) {}
+    : numbers(numbers_filepath), accepter(port, numbers, results) {}
 
 void Server::run() {
     // hilo principal del servidor

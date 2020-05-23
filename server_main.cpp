@@ -18,7 +18,7 @@
 int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cerr << USAGE_ERROR_MSG << std::endl;
-        return USAGE_ERROR;
+        return SERVER_USAGE_ERROR;
     }
 
     std::string port = argv[1];
@@ -29,10 +29,10 @@ int main(int argc, char* argv[]) {
         server.run();
     } catch (const Exception& e) {
         std::cerr << e.what() << "\n";
-        return ERROR;
+        return SERVER_ERROR;
     } catch (...) {
         std::cerr << "Error desconocido." << '\n';
-        return ERROR;
+        return SERVER_ERROR;
     }
 
     return 0;

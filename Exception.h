@@ -8,8 +8,11 @@
 
 // ----------------------------------------------------------------------------
 // Codigos de retorno
-#define ERROR 1
-#define USAGE_ERROR 1
+#define CLIENT_ERROR 0
+#define CLIENT_USAGE_ERROR 0
+
+#define SERVER_ERROR 1
+#define SERVER_USAGE_ERROR 1
 // ----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------

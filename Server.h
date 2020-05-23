@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Accepter.h"
+#include "Numbers.h"
 #include "Results.h"
 #include "Thread.h"
 #include "defs.h"
@@ -15,8 +16,9 @@
 
 class Server {
    private:
-    Accepter accepter;
     ProtectedResults results;
+    Numbers numbers;
+    Accepter accepter;
 
     /**
      * Descripcion: imprime las estadisticas finales utilizando la macro

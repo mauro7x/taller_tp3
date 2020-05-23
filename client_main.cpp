@@ -18,7 +18,7 @@
 int main(int argc, char* argv[]) {
     if (argc != 3) {
         std::cout << USAGE_ERROR_MSG << std::endl;
-        return USAGE_ERROR;
+        return CLIENT_USAGE_ERROR;
     }
 
     std::string hostname = argv[1];
@@ -29,10 +29,10 @@ int main(int argc, char* argv[]) {
         game.play();
     } catch (const Exception& e) {
         std::cerr << e.what() << "\n";
-        return ERROR;
+        return CLIENT_ERROR;
     } catch (...) {
         std::cerr << "Error desconocido." << '\n';
-        return ERROR;
+        return CLIENT_ERROR;
     }
 
     return 0;
