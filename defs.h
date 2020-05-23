@@ -50,7 +50,7 @@
 // CONFIGURACION DEL SERVIDOR
 
 // Maximos clientes encolados esperando ser aceptados
-#define MAX_QUEUED_CLIENTS 10
+#define MAX_QUEUED_CLIENTS 100
 
 // ----------------------------------------------------------------------------
 
