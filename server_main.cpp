@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         return SERVER_ERROR;
     }
 
-    return 0;
+    return SERVER_SUCCESS;
 }
 
 // ----------------------------------------------------------------------------

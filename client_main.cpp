@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
         return CLIENT_ERROR;
     }
 
-    return 0;
+    return CLIENT_SUCCESS;
 }
 
 // ----------------------------------------------------------------------------
