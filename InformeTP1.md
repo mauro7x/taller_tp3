@@ -201,7 +201,7 @@ En este contexto, y teniendo en cuenta que debíamos generar dos aplicativos ind
 
 - **Socket**: este TDA es fundamental, pues nos permitirá encapsular los métodos necesarios para permitir la conexión Cliente-Servidor. Principalmente, el socket estará formado por un `file descriptor` que lo identifica.
 
-| ![primeras_ideas](img/primeras_ideas.png) | 
+| ![primeras_ideas](img/old/primeras_ideas.png) | 
 |:--:| 
 | *Primeros TDAs diseñados* |
 
@@ -229,7 +229,7 @@ En este punto, ya contaba con 5 TDAs con responsabilidades bien claras:
 
 - **Stdin_Streamer**, responsable del ingreso de los datos al aplicativo `Cliente`.
 
-| ![segundas_ideas](img/segundas_ideas.png) | 
+| ![segundas_ideas](img/old/segundas_ideas.png) | 
 |:--:| 
 | *Agregamos `stdin_streamer` y `call`.* |
 
@@ -265,7 +265,7 @@ Tras su implementación, pude llegar a mi diseño final, con el que me siento sa
 
 Mi diseño final consta de **7 TDAs** con **responsabilidades claras** y un acoplamiento razonable. Los mismos se muestran a continuación en el siguiente gráfico:
 
-| ![ideas_finales](img/ideas_finales.png) | 
+| ![ideas_finales](img/old/ideas_finales.png) | 
 |:--:| 
 | *Diseño final* |
 

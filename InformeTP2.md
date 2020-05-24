@@ -83,7 +83,7 @@ los deposita en un **inventario de materias primas compartido**.
 > 
 > También es muy recomendable **incluir explicaciones breves** de cómo implementaron estas partes claves en sus soluciones.
 
-| ![catedra](img/catedra.png) | 
+| ![catedra](img/old/catedra.png) | 
 |:--:| 
 | *Modelo propuesto por la cátedra* |
 
@@ -304,14 +304,14 @@ Para **procesar los archivos de entrada**, diseñé dos clases específicas, una
 - `WorkersConfig`: clase que se encarga de parsear el archivo de configuración de los trabajadores. Se utiliza para encapsular este parseo, y que el hilo principal simplemente lo instancie y lo utilice preguntándole cuántos agricultores debe generar, cuántos leñadores, etc.
     * **Implementación**: utiliza un `unordered_map` debido a que este está implementado como un HashMap y es *O(1)* para el acceso, por lo que resulta muy eficiente utilizarlo. Se sobrecarga el operador `operator[]` para el acceso a las cantidades, para lograr mayor legibilidad y evitar tener tantos *getters* como tipos de trabajadores hayan en el ejercicio.
 
-| ![workers](img/clases/workers.png) |
+| ![workers](img/old/clases/workers.png) |
 |:--:|
 | *Diagrama de clase **WorkersConfig*** |
 
 - `MapParser`: clase que se encarga de parsear el archivo del mapa. El hilo principal sólo debe instanciarlo y utilizar su método pop para ir obteniendo los recursos uno a uno.
     * **Implementación**: se utiliza nuevamente un `unordered_map` para el mappeo desde el caracter leído hacia el `Recurso`. Se sobrecarga el operador `operator>>` para el pop, a razón de dar legibilidad (podemos ejecutar: `map >> resource;`). Un detalle es que se elige procesar los recursos uno a uno a medida que el hilo principal los pida, con el objetivo de que los recursos se inserten en las colas apenas estén disponibles.
 
-| ![map](img/clases/map.png) |
+| ![map](img/old/clases/map.png) |
 |:--:|
 | *Diagrama de clase **MapParser*** |
 
@@ -330,7 +330,7 @@ Para los **objetos activos** *(como se explicó previamente, esto significa que 
 
 A continuación incluyo un diagrama que muestra la relación entre estas clases:
 
-| ![herencia](img/herencia.png) |
+| ![herencia](img/old/herencia.png) |
 |:--:|
 | *Diagrama de clases que muestra la herencia de los **objetos activos*** |
 
@@ -349,7 +349,7 @@ Frente a esto, decidí quedarme con la implementación **tradicional**: una cola
 - `ResourceQueue`: implementación de una cola bloqueante de `Resources`. Utiliza `condition_variables` para notificar a los recolectores que hay nuevos recursos o de que se cerró la cola.
     * **Implementación**: contiene una `std::queue`, una `std::condition_variable`, y un `std::mutex` para sincronizar el acceso a las colas, puesto que como se explicó anteriormente, se trata de un **recurso compartido**.
     
-| ![queue](img/clases/resourcequeue.png) |
+| ![queue](img/old/clases/resourcequeue.png) |
 |:--:|
 | *Diagrama de clase **ResourceQueue*** |
 
@@ -370,7 +370,7 @@ Considero que para la extensión de este ejercicio es una buena idea quedarse co
 - `InventoryProtected`: **recurso compartido** entre todos los hilos participantes del ejercicio, donde los recolectores almacenan los recursos y de donde los productores retiran recursos para fabricar sus respectivas recetas.
     * **Implementación**: se implementa utilizando un `unordered_map` donde se cuenta la cantidad de cada tipo de recurso que hay en cada momento. Se utiliza una `condition_variable` como se explicó previamente en conjunto con un `mutex` para proteger el acceso.
     
-| ![inventory](img/clases/inventory.png) |
+| ![inventory](img/old/clases/inventory.png) |
 |:--:|
 | *Diagrama de clase **Inventory*** |
 
@@ -381,7 +381,7 @@ El contador de puntos es otro de los **recursos compartidos**, por lo que simple
 - `CounterProtected`: monitor para los puntos de beneficio. Es compartido por los productores.
     * **Implementación**: como todo monitor, cuenta con el recurso a compartir *(en este caso un contador)* y con un `mutex`.
     
-| ![points](img/clases/points.png) |
+| ![points](img/old/clases/points.png) |
 |:--:|
 | *Diagrama de clase **CounterProtected*** |
 
@@ -391,7 +391,7 @@ Para el manejo de errores, como se describirá en una [sección posterior](#erro
 
 - `Exception`: abstracción que permite agregarle un **código de retorno** a una `std::exception`, para poder terminar la ejecución con códigos de error personalizados.
     
-| ![exception](img/clases/exception.png) |
+| ![exception](img/old/clases/exception.png) |
 |:--:|
 | *Diagrama de clase **Exception*** |
 
@@ -406,7 +406,7 @@ Su creación permite, además, encapsular el comportamiento del juego evitando q
 - `Game`: organizador, se encarga de realizar las acciones necesarias para llevar a cabo el plan de ejecución descripto anteriormente.
     * **Implementación**: contiene un `WorkerConfig`, un `MapParser`, un `InventoryProtected`, un `CounterProtected`, tres `ResourceQueue`s *(una para cada tipo de recolector)*, tres `Recipe`s *(una para cada tipo de  productor)* y finalmente dos arreglos de `Threads`: uno para los `Producer`s, y otro para los `Gatherer`s.
     
-| ![game](img/clases/game.png) |
+| ![game](img/old/clases/game.png) |
 |:--:|
 | *Diagrama de clase **Game*** |
 
@@ -414,7 +414,7 @@ Su creación permite, además, encapsular el comportamiento del juego evitando q
 
 Se llega a partir del diseño de las clases detalladas, al siguiente **diagrama final**:
 
-| ![final](img/final.png) |
+| ![final](img/old/final.png) |
 |:--:|
 | *Diagrama final de clases* |
 
