@@ -1,6 +1,8 @@
 # Taller de Programación I - TP3 (6/6)
 
-**El TP se encuentra en proceso de realización, se puede ver el progreso realizado en este archivo.**
+**~El TP se encuentra en proceso de realización, se puede ver el progreso realizado en este archivo.~**
+
+**El TP se encuentra finalizado. Se puede ver el informe [aquí](#README.md).**
 
 El objetivo de este archivo es establecer desde el día uno un plan de ejecución a seguir bien claro que me permita llegar a un resultado final bien diseñado, legible y con poco acomplamiento sin morir en el intento.
 
