@@ -32,6 +32,10 @@
     * [Restricciones](#restricciones)
 3. [Introducción teórica](#teorica)
 4. [Resolución](#resolucion)
+    * [Plan de resolución](#plan)
+    * [Cliente](#client_model)
+    * [Servidor](#server_model)
+    * [Modelo final](#final_model)
 5. [Códigos de retorno](#retorno)
 6. [Conclusiones](#conclusiones)
 
@@ -258,12 +262,192 @@ Este trabajo práctico número 3, **combina ambos aspectos**: la idea es hacer u
 
 Para no sobrecargar el informe de contenido que ya describí en informes anteriores, prefiero **utilizar las herramientas directamente**, y adjuntar en este mismo trabajo práctico ambos informes anteriores para que el lector pueda ver el desarrollo teórico allí realizado.
 
-* [Informe TP1](InformeTP1.md)
-* [Informe TP2](InformeTP2.md)
+- [TP1: Cliente/Servidor](#InformeTP1.md)
+- [TP2: Threads](#InformeTP2.md)
+
+Doy por explicadas las herramientas que allí detallo para realizar este trabajo y evitar redundancia.
 
 ---
 
 # 4. Resolución <a name="resolucion"></a>
+
+## Plan de resolución <a name="plan"></a>
+
+Al igual que en trabajos anteriores, antes de ponerme a escribir código me dediqué a diseñar un plan de resolución que me permita ser eficiente y no escribir de más, así como intentar reducir al mínimo posible la generación de bugs y de código que luego deberá ser cambiado. Para esto, seguí lineamientos vistos en clase, que se pueden ver en detalle [aquí](#progreso.md).
+
+Básicamente, el plan consiste en:
+
+1. Realizar en papel un diseño completo de nuestro problema, con el objetivo de identificar **entidades** y clafisicarlas en distintas categorías, como podrían ser **objetos activos**, **recursos compartidos**, **canales de comunicación**, **lógica del negocio**, etc.
+
+2. Una vez que tenemos el diseño básico en papel, procedemos a utilizar un concepto conocido como **proxy**. En esencia, utilizaremos **proxies** como objetos *fake*, puesto que quien los use creerá que hace una cosa, cuando en verdad hace otra.
+
+    Por ejemplo: el cliente deberá utilizar alguna entidad para conectarse con el servidor y enviarle mensajes. Podríamos desde el primer momento diseñar una clase `Client` o `Protocol` o `ServerConnection` a través de la cual el cliente podría intercambiar mensajes con el servidor, pero es prácticamente seguro que escribiremos mucho código de más y tendremos muchos más bugs y dificultades a la hora de debuggear nuestro programa, pues estaríamos intentando hacer todo desde un principio. Aquí es donde surge el concepto de proxies: podemos crear una clase `ClientProxy` y que nuestro cliente **crea** que se comunica con el servidor, cuando en realidad esta clase **hardcodea** los valores de retorno que espera del servidor. Esto permite primero centrarse en resolver la lógica del programa, para luego con esta funcionando, implementar la funcionalidad que comunica ambos extremos.
+
+    En esta etapa, entonces, diseñamos las **API** para el **cliente** y para el **servidor**, utilizando este concepto.
+
+3. Ahora que tenemos nuestras clases proxy, resolvemos la **lógica del problema**. Es aquí cuando implementaremos las reglas del juego, el comportamiento de nuestras clases que componen el mismo, etc. Con el juego funcionando, pasamos a la próxima etapa.
+
+4. Ahora poco a poco debemos **convertir nuestros objetos proxy en objetos reales**, que comuniquen nuestros extremos entre sí y utilicen múltiples hilos, etc. Primero, en esta etapa, nos ocuparemos de **serializar** la información. Para esto empezaremos por convertir nuestro `ProtocolProxy` en un verdadero `Protocol`, que serialice los mensajes a enviar.
+
+5. Con la serialización funcionando, ahora sí, a nuestros protocolos les transformamos el `SocketProxy` en un **verdadero `Socket`**, para poder **conectar** a nuestros clientes con el servidor. Esta transición debería ser inmediata, pues si hicimos todo bien, sería tan simple como cambiar un `typedef int Socket` por un `#include "Socket.h"`. Para que esto funcione es esencial **diseñar bien nuestros objetos proxy**.
+
+6. Lo único que falta ahora es introducir **multi-threading**, y nuevamente gracias a los objetos proxy esto debería ser tan sencillo como hacer que **nuestros objetos activos hereden de Thread**. Nuevamente, facilidades que nos brinda el concepto de proxy.
+
+Explicado el plan seguido, en las próximas secciones mostraré detalles sobre qué **clases** diseñé para modelar las **distintas entidades del juego**.
+
+## Cliente <a name="client_model"></a>
+
+Empezaremos por el cliente. Este cliente es bastante sencillo, pues no necesitamos múltiples hilos de ejecución dado que lo único que debe hacer el cliente, en pseudo-código, es lo siguiente:
+
+```
+Mientras que el juego continue:
+    leer un comando de entrada estandar.
+    enviar el comando a través del protocolo al servidor.
+    recibir una respuesta del servidor a través del protocolo.
+    imprimir la respuesta por salida estandar.
+    verificar si el juego continua.
+Liberar recursos y salir.
+```
+
+Como vemos, es un **simple loop de ejecución continua** y no hay paralelizaciones claras que se puedan realizar, por lo que opto por no utilizar threads en este aplicativo.
+
+### 1. Identificamos entidades:
+
+Mientras que el **juego** continue:
+- leer un **comando** de **entrada estándar**.
+- enviar el *comando* a través del **protocolo** al **servidor**.
+- recibir una **respuesta** del servidor a través del protocolo.
+- imprimir la respuesta por **salida estándar**.
+- verificar si el juego continua.
+
+Liberar recursos y salir.
+
+Vemos que para nuestro cliente, deberemos modelar las siguietnes entidades: juego, comando, algún streamer de entrada estandar, un protocolo, alguna forma de conectarnos con el servidor, almacenamiento de respuesta, salida estandar.
+
+### 2. Diseño de entidades:
+
+Implementaremos en base a las entidades identificadas en la sección anterior, las siguientes **clases**:
+
+| Clase | Descripción | Detalles de implementación |
+|-------|-------------|----------------------------|
+| **ClientGame** | Encapsular la ejecución del juego. Permite evitar incluir lógica del negocio en nuestro *main*, generando código más legible y claro. Es el que se encargará de orquestrar la ejecución del aplicativo `client`. | Se ofrece un sólo método en su API: `play()`, que pone el juego a correr, implementando el pseudo código descripto previamente. |
+| **CommandStreamer** | Encapsular la lectura de los datos de entrada en una sola clase. Leerá los comandos ingresados por el cliente y los creará alocandolos en el heap y devolviendo un puntero a los mismos. | Se generaliza la implementación para cualquier stream de datos pues lo recibe por parámetro al momento de su instanciación. |
+| **Command** | **Interfaz** a ser implementada por los distintos comandos. Queremos que los comandos se sepan ejecutar para realizar su función principal. | Exige entonces, entre otras cosas, la implementación del `operator()` que permitirá ejecutarlo. Para que todos los comandos se puedan ejecutar polimórficamente, se exige que se invoque al operador `()` pasandole, entre otras cosas, el número secreto a adivinar así como un `std::string` pasado por referencia donde almacenar la respuesta. Devuelven un `state`. |
+| **Guess** | Comando concreto, implementa **Command**. Su función será la de intentar adivinar un número concreto. | Compara el número recibido al momento de su instanciación con el número secreto recibido al momento de su ejecución. Guarda en el string recibido el resultado de la comparación. Siempre que se ejecuta gasta un intento. |
+| **Surrender** | Comando concreto, implementa **Command**. Su función será la de rendirse. | Siempre devuelve `state=LOSS` y actualiza la respuesta en el string recibido. Termina la ejecución. |
+| **Help** | Comando concreto, implementa **Command**. Su función será la de pedir ayuda sobre el uso permitido. | Siempre devuelve `state=CONTINUE` y actualiza la respuesta en el string recibido. Nunca gasta intentos. |
+| **ClientProtocol** | Encapsular el protocolo y la conexión con el servidor, permitiendo desacoplar la inclusión del sistema **Cliente/Servidor** de la lógica del juego. El cliente deberá tratarlo como un canal de comunicación con el servidor. | Contiene un `Socket` que se conecta al servidor al momento de la instanciación del procotolo. Se sobrecargan los operadores `>>` para recibir y `<<` para enviar datos, a fines de facilitar la legibilidad del código. |
+
+Además, utilizaremos las siguientes **abstracciones comunes** a varios trabajos prácticos:
+
+| Clase | Descripción | Detalles de implementación |
+|-------|-------------|----------------------------|
+| **Exception** | Hereda de `std::exception`. Permite encapsular y agregar mensajes de error personalizados a las excepciones que nos provee C++, `std::exception`.  | Se permite herencia a fin de crear excepciones específicas para ciertos casos. |
+| **Socket** | Abstracción creada en el TP1. Permite conectarnos con otro socket mediante distintos procolos, en este caso, **TCP**. | Contiene un `file descriptor` que se inicia y se conecta apenas se instancia el socket, proporcionando tres distintas maneras de instanciarlo: una para el *client-side*, y dos para el *server-side* (según se trate de un "*accepter socket*" o de un "*peer socket*"). |
+
+Por último utilizaremos los siguientes **tipos definidos**:
+
+| Tipo definido | Valores posibles | Detalles de implementación |
+|---------------|------------------|----------------------------|
+| **state** | `CONTINUE = 0`, `WIN = 1`, `LOSS = 2` | **Enum** utilizado como flags de ejecución de los comandos. Estos permiten a quien ejecute un comando saber como se debe proseguir tras su finalización. |
+
+### 3. Armado del modelo final
+
+Con las entidades previamente diseñadas, se procede al armado del modelo:
+
+// diagrama del modelo CLIENTE
+
+
+## Servidor <a name="server_model"></a>
+
+Ahora es turno de diseñar el servidor. Acá la cosa se pone un poco más compleja, pues a priori parece que debemos realizar varias tareas de forma **paralela**: **aceptar** nuevos clientes, **procesar** los pedidos de los clientes, aceptar entrada externa a fines de **controlar** la ejecución del servidor.
+
+Vemos entonces que en un primer análisis se identifican rápidamente **tres loops de ejecución**, y para afrontar esta problemática utilizaremos [**threads**](#InformeTP2.md).
+
+Propongo para comenzar, el siguiente pseudo-código:
+```
+Crear estructura para almacenar resultados.
+Procesar los números a utilizar recibidos por argumento.
+Crear un hilo aceptador que acepte nuevos clientes*.
+Poner dicho hilo a correr.
+Mientras la entrada no sea 'q':
+    leer comando por entrada estandar.
+Dar la órden de cierre al hilo aceptador.
+Esperar que el hilo aceptador termine.
+Liberar recursos y salir.
+
+
+// *: creación de hilo Aceptador.
+```
+
+Pseudo-código del hilo **Aceptador**:
+```
+Mientras que deba seguir aceptando clientes:
+    aceptar un cliente y obtener su file descriptor.
+    crear un nuevo juego para el cliente*².
+    iniciar el juego para el cliente.
+    agregar el juego a un contenedor de juegos activos.
+    fijarse si hay juegos que hayan terminado y joinearlos*³.
+Esperar que terminen los juegos activos*⁴.
+Liberar recursos y salir.
+
+
+// *²: creación de hilo para la ejecución de un juego.
+// *³: join no bloqueante, no se espera que terminen.
+// *⁴: join bloqueante, esperamos a que los juegos terminen naturalmente.
+```
+
+Pseudo-código para el hilo de cada **juego en ejecución**:
+```
+Iniciar el estado en: ejecutando.
+Mientras el juego continue:
+    recibir un comando del cliente a través del protocolo.
+    ejecutar dicho comando.
+    enviar respuesta al cliente a través del protocolo.
+Modificar el estado a: finalizado.
+```
+
+Como vemos, hay tres loops de ejecución claros y para esto necesitaremos utilizar un hilo por cada uno de ellos, es decir:
+- Un hilo para el **Servidor**,
+- Un hilo para el **Aceptador**,
+- Un hilo **PARA CADA CLIENTE que juegue** *(n hilos, con n clientes)*.
+
+### 1. Identificamos entidades:
+
+Para el **hilo principal del servidor**, vemos que necesitaremos: una entidad aceptadora de clientes (objeto activo), un parser de los números recibidos, una estructura para almacenar los resultados.
+
+Para el **hilo aceptador**, necesitaremos: entidad juego del cliente (objeto activo), un contenedor de juegos activos.
+
+Para cada **hilo de ejecución de juego**, necesitaremos: un estado de ejecución, conocer al objeto comando creado en [Cliente](#client_model), una estructura para almacenar la respuesta a enviar.
+
+### 2. Diseño de entidades:
+
+Implementaremos en base a las entidades identificadas en la sección anterior, las siguientes **clases**:
+
+| Clase | Descripción | Detalles de implementación |
+|-------|-------------|----------------------------|
+| **Server** |  |  |
+| **Numbers** |  |  |
+| **ProtectedResults** |  |  |
+| **Accepter** |  |  |
+| **ServerGame** |  |  |
+| **ServerProtocol** |  |  |
+
+A su vez, re-utilizaremos la clase diseñada para el cliente: **Command**, así como las clases comunes descriptas previamente: **Socket** y **Exception**.
+
+
+| **ClientGame** | Encapsular la ejecución del juego. Permite evitar incluir lógica del negocio en nuestro *main*, generando código más legible y claro. Es el que se encargará de orquestrar la ejecución del aplicativo `client`. | Se ofrece un sólo método en su API: `play()`, que pone el juego a correr, implementando el pseudo código descripto previamente. |
+| **ClientProtocol** | Encapsular el protocolo y la conexión con el servidor, permitiendo desacoplar la inclusión del sistema **Cliente/Servidor** de la lógica del juego. El cliente deberá tratarlo como un canal de comunicación con el servidor. | Contiene un `Socket` que se conecta al servidor al momento de la instanciación del procotolo. Se sobrecargan los operadores `>>` para recibir y `<<` para enviar datos, a fines de facilitar la legibilidad del código. |
+
+### 3. Armado del modelo final
+
+Con las entidades previamente diseñadas, se procede al armado del modelo:
+
+// diagrama del modelo SERVIDOR
+
+## Modelo final <a name="final_model"></a>
+
+// diagrama FINAL
 
 ---
 
