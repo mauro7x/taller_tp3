@@ -355,7 +355,9 @@ Por último utilizaremos los siguientes **tipos definidos**:
 
 Con las entidades previamente diseñadas, se procede al armado del modelo:
 
-// diagrama del modelo CLIENTE
+| ![game](img/client.png) |
+|:--:|
+| *Diagrama de clases: **cliente*** |
 
 
 ## Servidor <a name="server_model"></a>
@@ -426,28 +428,32 @@ Implementaremos en base a las entidades identificadas en la sección anterior, l
 
 | Clase | Descripción | Detalles de implementación |
 |-------|-------------|----------------------------|
-| **Server** |  |  |
-| **Numbers** |  |  |
-| **ProtectedResults** |  |  |
-| **Accepter** |  |  |
-| **ServerGame** |  |  |
-| **ServerProtocol** |  |  |
+| **Server** | Encapsula la ejecución del servidor en sí. Permite evitar incluir lógica del negocio en el *main*, simplemente siendo necesario instanciar esta clase para abrirlo a la escucha de clientes. | Se ofrece un sólo método en su API pública: `run()`. En caso de querer que este servidor corra en un hilo nuevo, podemos hacerlo heredar de `Thread` y automáticamente se convierte en un objeto activo. |
+| **Numbers** | Encapsula el parseo del archivo con los números que el servidor usará para el juego. Ofrece el operador `operator()` que devuelve el próximo número a utilizar. | Los números se procesan, se validan, y se almacenan en una lista. Se utiliza el mecanismo **round robin** para devolver los números. Esta pensado para que un solo hilo acceda a él, pues no incluye mutex. |
+| **ProtectedResults** | Monitor que protege las estadísticas: cantidad de victorias y de derrotas. Se ofrece una API protegida, pues está pensado para ser usado por múltiples hilos. | Implementa el monitor utilizando un `mutex` y un `unique_lock`. |
+| **Accepter** | Objeto activo que se encarga de aceptar clientes nuevos y guardarlos en un vector de clientes activos. Cuando se acepta un nuevo cliente, se procede a verificar si hay juegos que ya terminaron para liberar sus recursos. | Se utiliza un container de tipo `std::vector` para almacenar los juegos activos. Se implementa un método para cortar la ejecución forzosamente en caso de errores inesperados. |
+| **ServerGame** | Objeto activo, encapsula la ejecución del juego del lado del servidor. Se encarga de comunicarse con el cliente en sí: de ejecutar los comandos que el mismo le envíe, así como de responderle. | Corre en su propio hilo, y tiene un estado `is_running` que permite saber si el juego ya termino para liberar sus recursos. |
+| **ServerProtocol** | Encapsula el protocolo y la conexión con el cliente, permitiendo desacoplar la inclusión del sistema **Cliente/Servidor** del juego. El handler del cliente lo debe tratar simplemente como un canal de comunicación con el mismo. | Utiliza un `Socket` para comunicarse con el cliente, y proporciona los operadores `>>` y `<<` para recibir y enviar contenido respectivamente. |
 
 A su vez, re-utilizaremos la clase diseñada para el cliente: **Command**, así como las clases comunes descriptas previamente: **Socket** y **Exception**.
-
-
-| **ClientGame** | Encapsular la ejecución del juego. Permite evitar incluir lógica del negocio en nuestro *main*, generando código más legible y claro. Es el que se encargará de orquestrar la ejecución del aplicativo `client`. | Se ofrece un sólo método en su API: `play()`, que pone el juego a correr, implementando el pseudo código descripto previamente. |
-| **ClientProtocol** | Encapsular el protocolo y la conexión con el servidor, permitiendo desacoplar la inclusión del sistema **Cliente/Servidor** de la lógica del juego. El cliente deberá tratarlo como un canal de comunicación con el servidor. | Contiene un `Socket` que se conecta al servidor al momento de la instanciación del procotolo. Se sobrecargan los operadores `>>` para recibir y `<<` para enviar datos, a fines de facilitar la legibilidad del código. |
 
 ### 3. Armado del modelo final
 
 Con las entidades previamente diseñadas, se procede al armado del modelo:
 
-// diagrama del modelo SERVIDOR
+| ![game](img/server.png) |
+|:--:|
+| *Diagrama de clases: **servidor*** |
 
-## Modelo final <a name="final_model"></a>
+## Manejo de errores <a name="errores"></a>
 
-// diagrama FINAL
+Como se mencionó previamente, para el manejo de errores se utilizó el mecanismo de **excepciones** que provee C++, utilizando `try and catch` en conjunto con distintas clases que heredan de `std::exception`.
+
+A continuación se incluye un diagrama que clarifica las excepciones creadas para el manejo de este problema:
+
+| ![game](img/exceptions.png) |
+|:--:|
+| *Diagrama de clases: **excepciones*** |
 
 ---
 
@@ -478,6 +484,8 @@ Respetando lo pedido por el [enunciado](#retornoespecifico), los códigos de ret
 
 # 6. Conclusiones <a name="conclusiones"></a>
 
+En lo personal, considero que fue un trabajo práctico muy interesante ya que nos permite combinar lo aprendido sobre **Cliente/Servidor** e incluir programación **multi-threading** para realizar las comunicaciones de manera eficiente. Considero también que es una base muy importante que nos permite programar aplicativos más complejos partiendo de esta simple idea.
 
+En vistas de re-utilizar mi código en un futuro, probablemente exporte varias de las abstracciones escritas y pruebe utilizarlas en otra aplicación.
 
 ---
