@@ -2,6 +2,7 @@
 #define __SERVER_GAME_H__
 
 // ----------------------------------------------------------------------------
+#include <atomic>
 #include <iostream>
 #include <string>
 
@@ -21,7 +22,7 @@ class ServerGame : public Thread {
     ProtectedResults& results;
     uint16_t secret_number;
     unsigned int remaining_attempts;
-    bool is_running;
+    std::atomic_bool is_running;
 
    public:
     /**

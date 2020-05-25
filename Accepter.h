@@ -23,7 +23,7 @@ class Accepter : public Thread {
     Numbers& numbers;
     ProtectedResults& results;
     std::vector<ServerGame*> active_games;
-    bool keep_accepting;
+    std::atomic_bool keep_accepting;
 
     /**
      * Descripcion: acepta un nuevo cliente y pone su juego a correr, lo
