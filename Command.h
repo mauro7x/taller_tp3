@@ -18,9 +18,6 @@
 enum state { CONTINUE, WIN, LOSS };
 // ----------------------------------------------------------------------------
 
-/**
- * Documentar.
- */
 class Command {
    private:
     char id;

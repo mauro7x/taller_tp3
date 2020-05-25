@@ -22,9 +22,6 @@
 
 // ----------------------------------------------------------------------------
 
-/**
- * Documentar.
- */
 class CommandStreamer {
    private:
     std::istream& stream;

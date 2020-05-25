@@ -16,9 +16,6 @@
 
 //-----------------------------------------------------------------------------
 
-/**
- * Socket. Descripcion. FALTA DOCUMENTAR.
- */
 class Socket {
    private:
     int fd;
