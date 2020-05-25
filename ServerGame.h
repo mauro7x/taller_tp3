@@ -51,7 +51,7 @@ class ServerGame : public Thread {
      *
      * Retorno: -
      */
-    void run();
+    void run() override;
 
     /**
      * Descripcion: verifica si el hilo termino de ejecutarse.
