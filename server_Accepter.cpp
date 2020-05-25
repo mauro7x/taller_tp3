@@ -48,11 +48,14 @@ void Accepter::_stopGames() {
 
 Accepter::Accepter(const std::string& port, Numbers& numbers,
                    ProtectedResults& results)
-    : socket(port, MAX_QUEUED_CLIENTS), numbers(numbers), results(results) {}
+    : socket(port, MAX_QUEUED_CLIENTS),
+      numbers(numbers),
+      results(results),
+      keep_accepting(true) {}
 
 void Accepter::run() {
     try {
-        while (true) {
+        while (keep_accepting) {
             _acceptOneGame();
             _joinAndFreeFinishedGames();
         }
@@ -70,6 +73,7 @@ void Accepter::run() {
 }
 
 void Accepter::close() {
+    keep_accepting = false;
     socket.shutdown();
     socket.close();
 }
