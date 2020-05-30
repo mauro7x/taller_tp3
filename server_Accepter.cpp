@@ -4,8 +4,8 @@
 // Métodos privados
 
 void Accepter::_acceptOneGame() {
-    int peer = socket.accept();
-    ServerGame* new_game = new ServerGame(peer, results, numbers());
+    Socket peer = socket.accept();
+    ServerGame* new_game = new ServerGame(std::move(peer), results, numbers());
     new_game->start();
     active_games.push_back(new_game);
 }

@@ -3,21 +3,18 @@
 //-----------------------------------------------------------------------------
 // Métodos privados
 
+Socket::Socket(const int fd) : fd(fd), fd_valid(true) {}
+
 void Socket::_setServerAddress(const std::string& port,
                                addrinfo** address) const {
     addrinfo hints;
+    memset(&hints, 0, sizeof(addrinfo));
 
     // Filtros que nos interesan:
     hints.ai_family = AF_INET;        // IPv4
     hints.ai_socktype = SOCK_STREAM;  // TCP
     hints.ai_flags = AI_PASSIVE;      // Servidor
     hints.ai_protocol = 0;
-
-    // Inicializamos en 0 el resto de los valores:
-    hints.ai_addr = NULL;
-    hints.ai_addrlen = 0;
-    hints.ai_canonname = NULL;
-    hints.ai_next = NULL;
 
     if (::getaddrinfo(0, &port[0], &hints, address)) {
         throw Exception("Error in function: Socket::_setServerAddres()");
@@ -28,18 +25,13 @@ void Socket::_setClientAddresses(const std::string& hostname,
                                  const std::string& port,
                                  addrinfo** addresses) const {
     addrinfo hints;
+    memset(&hints, 0, sizeof(addrinfo));
 
     // Filtros que nos interesan:
     hints.ai_family = AF_INET;        // IPv4
     hints.ai_socktype = SOCK_STREAM;  // TCP
     hints.ai_flags = 0;               // Cliente
     hints.ai_protocol = 0;
-
-    // Inicializamos en 0 el resto de los valores:
-    hints.ai_addr = NULL;
-    hints.ai_addrlen = 0;
-    hints.ai_canonname = NULL;
-    hints.ai_next = NULL;
 
     if (::getaddrinfo(&hostname[0], &port[0], &hints, addresses)) {
         throw Exception("Error in function: Socket::_setClientAddresses()");
@@ -132,8 +124,6 @@ Socket::Socket(const std::string& port, const int max_queued_clients) {
     }
 }
 
-Socket::Socket(const int fd) : fd(fd), fd_valid(true) {}
-
 Socket::Socket(const std::string& hostname, const std::string& port) {
     // Método para el cliente. Conectarse a un servidor.
     addrinfo* addresses;
@@ -148,20 +138,24 @@ Socket::Socket(const std::string& hostname, const std::string& port) {
 Socket::Socket(Socket&& other) {
     this->fd = std::move(other.fd);
     this->fd_valid = std::move(other.fd_valid);
+    other.fd_valid = false;
+    other.fd = -1;
 }
 
 Socket& Socket::operator=(Socket&& other) {
     this->fd = std::move(other.fd);
     this->fd_valid = std::move(other.fd_valid);
+    other.fd_valid = false;
+    other.fd = -1;
     return *this;
 }
 
-int Socket::accept() const {
+Socket Socket::accept() const {
     int peer_socket = ::accept(fd, NULL, NULL);
     if (peer_socket == -1) {
         throw SocketClosedException("Error in function: Socket::accept()");
     }
-    return peer_socket;
+    return std::move(Socket(peer_socket));
 }
 
 ssize_t Socket::send(const char* source, const ssize_t len) const {
@@ -175,7 +169,7 @@ ssize_t Socket::send(const char* source, const ssize_t len) const {
         if (last_sent == -1) {
             throw Exception("Error in function: Socket::send()");
         } else if (last_sent == 0) {
-            return 0;
+            return total_sent;
         } else {
             total_sent += last_sent;
         }
@@ -195,7 +189,7 @@ ssize_t Socket::recv(char* buffer, const ssize_t len) const {
         if (last_received == -1) {
             throw Exception("Error in function: Socket::recv()");
         } else if (last_received == 0) {
-            return 0;
+            return total_received;
         } else {
             total_received += last_received;
         }

@@ -24,9 +24,9 @@ class ServerProtocol {
     /**
      * Descripcion: constructor para los ClientHandlers del servidor.
      *
-     * Parametros: file descriptor del socket peer valido.
+     * Parametros: socket por movimiento.
      */
-    explicit ServerProtocol(const int fd);
+    explicit ServerProtocol(Socket peer);
 
     /**
      * Deshabilitamos el constructor por copia y su operador.

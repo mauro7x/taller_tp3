@@ -3,6 +3,7 @@
 
 //-----------------------------------------------------------------------------
 #include <netdb.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -20,6 +21,16 @@ class Socket {
    private:
     int fd;
     bool fd_valid;
+
+    /**
+     * Diseñado para crear las instancias de socket peer.
+     *
+     * Descripcion: constructor con fd.
+     *
+     * Parametros: file descriptor valido correctamente inicializado.
+     *
+     */
+    explicit Socket(const int fd);
 
     /** (SERVER-SIDE)
      * Descripcion: obtiene la dirección donde se abrira el servidor a la
@@ -135,18 +146,6 @@ class Socket {
      */
     Socket(const std::string& port, const int max_queued_clients);
 
-    /** (SERVER-SIDE)
-     * Diseñado para ser utilizado por el SERVIDOR para crear los
-     * socket peer con los que se comunica con sus clientes.
-     *
-     * Descripcion: constructor con fd.
-     *
-     * Parametros: file descriptor valido correctamente inicializado.
-     *
-     * Se toma la responsabilidad del cierre del fd.
-     */
-    explicit Socket(const int fd);
-
     /** (CLIENT-SIDE)
      * Diseñado para ser utilizado por el CLIENTE para conectarse
      * a un determinado servidor.
@@ -176,12 +175,11 @@ class Socket {
      *
      * Parametros: -
      *
-     * Retorno: file descriptor del socket aceptado.
+     * Retorno: socket peer por movimiento.
      *
-     * No toma la responsabilidad de cerrar el fd devuelto.
      * >THROW EXPLICITO DE EXCEPTION.
      */
-    int accept() const;
+    Socket accept() const;
 
     /**
      * Descripcion: envia len bytes de source a través del socket.
@@ -243,10 +241,8 @@ class Socket {
 
     /**
      * Descripcion: destructor.
-     *
-     * Cierra el file descriptor asociado al socket.
      */
-    ~Socket();
+    virtual ~Socket();
 };
 
 //-----------------------------------------------------------------------------

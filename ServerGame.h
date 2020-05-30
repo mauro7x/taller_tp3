@@ -10,6 +10,7 @@
 #include "Exception.h"
 #include "Results.h"
 #include "ServerProtocol.h"
+#include "Socket.h"
 #include "Thread.h"
 #include "defs.h"
 // ----------------------------------------------------------------------------
@@ -29,9 +30,10 @@ class ServerGame : public Thread {
      * Descripcion: constructor. Inicia el protocolo pasandole el fd
      * recibido, se supone correctamente inicializado por el Accepter.
      *
-     * Parametros: fd del socket peer, numero secreto, intentos restantes.
+     * Parametros: socket peer por movimiento, numero secreto, intentos
+     * restantes.
      */
-    ServerGame(int fd, ProtectedResults& results, uint16_t secret_number);
+    ServerGame(Socket peer, ProtectedResults& results, uint16_t secret_number);
 
     /**
      * Deshabilitamos el constructor por copia y su operador.

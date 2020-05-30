@@ -6,9 +6,9 @@
 // ----------------------------------------------------------------------------
 // API pública
 
-ServerGame::ServerGame(int fd, ProtectedResults& results,
+ServerGame::ServerGame(Socket peer, ProtectedResults& results,
                        uint16_t secret_number)
-    : protocol(fd),
+    : protocol(std::move(peer)),
       results(results),
       secret_number(secret_number),
       remaining_attempts(ATTEMPTS),

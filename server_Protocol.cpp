@@ -6,7 +6,7 @@
 // ----------------------------------------------------------------------------
 // API pública
 
-ServerProtocol::ServerProtocol(const int fd) : peer(fd) {}
+ServerProtocol::ServerProtocol(Socket peer) : peer(std::move(peer)) {}
 
 void ServerProtocol::operator>>(Command*& cmd) const {
     char type;
@@ -51,6 +51,7 @@ void ServerProtocol::stop() {
 
 ServerProtocol::~ServerProtocol() {
     peer.shutdown();
+    peer.close();
 }
 
 // ----------------------------------------------------------------------------
